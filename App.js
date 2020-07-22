@@ -27,7 +27,7 @@ const CalculatorStack = createStackNavigator(
     defaultNavigationOptions: {
       //Untuk Header
       headerStyle: {
-        backgroundColor: '#42f44b', shadowColor: "#000",
+        backgroundColor: '#7F00FF', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -51,9 +51,9 @@ const HomeStack = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      //Untuk Header
+      //header untuk Settings dan sejenis
       headerStyle: {
-        backgroundColor: '#42f44b', shadowColor: "#000",
+        backgroundColor: '#7F00FF', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -63,7 +63,7 @@ const HomeStack = createStackNavigator(
 
         elevation: 10,
       },
-      headerTintColod: '#FFFFFF',
+      headerTintColor: '#FFFFFF',
       title: 'Home',
     },
   }
@@ -78,7 +78,7 @@ const EcomStack = createStackNavigator(
     defaultNavigationOptions: {
       //Untuk Header
       headerStyle: {
-        backgroundColor: '#42f44b', shadowColor: "#000",
+        backgroundColor: '#7F00FF', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -105,7 +105,7 @@ const SettingsStack = createStackNavigator(
     defaultNavigationOptions: {
       //header untuk Settings dan sejenis
       headerStyle: {
-        backgroundColor: '#42f44b', shadowColor: "#000",
+        backgroundColor: '#7F00FF', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -130,7 +130,7 @@ const ChatStack = createStackNavigator(
     defaultNavigationOptions: {
       //Untuk Header
       headerStyle: {
-        backgroundColor: '#42f44b', shadowColor: "#000",
+        backgroundColor: '#7F00FF', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -178,7 +178,7 @@ const App = createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#42f44b',
+      activeTintColor: '#7F00FF',
       inactiveTintColor: 'gray', shadowColor: "#000",
       shadowOffset: {
         width: 0,
