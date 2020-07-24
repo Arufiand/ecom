@@ -4,6 +4,8 @@ import { Button, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 //import Ionicons
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+
+
 //import react navigation
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
