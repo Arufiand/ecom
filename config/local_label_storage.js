@@ -1,0 +1,17 @@
+export default Label = {
+    user_login_id: 'user_login_id',
+    user_login_token: 'user_login_token',
+    user_profile_pict: 'profile_pict',
+    user_chat_id: 'user_chat_id',
+    tutorial_status: 'tutor_status',
+    onesignal_init_id: 'f8e2365d-90e3-49f7-8fb7-9b9d53554ede',
+    onesignal_id: 'signal_id',
+    is_login: 'is_login',
+    status_workr: 'status_workr',
+    version: '1.1.1.4rc1',
+    user_login_id_rocket: 'user_login_id_rocket',
+    user_login_token_rocket: 'user_login_token_rocket',
+    user_is_stream_chat: 'user_is_stream_chat',
+    status_clock_in: 'status_clock_in',
+    onesignal_push_token: 'push_token',
+}
