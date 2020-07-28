@@ -11,7 +11,7 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import HomeScreen from './pages/HomeScreen';
+import HomeScreen from './pages/Home/HomeScreen';
 import SettingsScreen from './pages/SettingsScreen';
 import DetailsScreen from './pages/DetailsScreen';
 import CalculatorScreen from './pages/CalculatorScreen';
@@ -55,7 +55,7 @@ const HomeStack = createStackNavigator(
     defaultNavigationOptions: {
       //header untuk Settings dan sejenis
       headerStyle: {
-        backgroundColor: '#7F00FF', shadowColor: "#000",
+        backgroundColor: '#838383', shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 5,
@@ -180,7 +180,7 @@ const App = createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
-      activeTintColor: '#7F00FF',
+      activeTintColor: '#838383',
       inactiveTintColor: 'gray', shadowColor: "#000",
       shadowOffset: {
         width: 0,

@@ -1,32 +1,25 @@
 //This is an example code for Bottom Navigation//
 import React, {useEffect, useState} from 'react';
 //import react in our code.
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, TextInput} from 'react-native';
 //import all the basic component we have used
-import FlexBox from './FlexBox';
-import * as useHomeScreen from './useHomeScreen';
+import FlexBox from '../FlexBox';
+import useHomeScreen from './useHomeScreen';
 import axios from 'axios';
 //import Onesignal
 import OneSignal from 'react-native-onesignal';
 import AsyncStorage from '@react-native-community/async-storage';
-import EndPoint from '../config/endpoint';
-import label from '../config/local_label_storage'
+import EndPoint from '../../config/endpoint';
+import label from '../../config/local_label_storage'
 import { lessOrEq } from 'react-native-reanimated';
 
-const HomeScreen = (props) => {
+const HomeScreen = () => {
 
 // const[username, setUsername] = useState('admin');
 // const[pass, setPass] = useState('adminadmin');
-const[username, setUsername] = useState('dwayne');
-const [pass, setPass] = useState('Med1xsoft');
-const[email, setEmail] = useState('dwayne@Danny.com');
-const[name, setName] = useState('Dwayne Rock Johnson');
-const[pushToken, setPushToken] = useState('');
-const[userId, setUserId] = useState('');
-const[authToken, setAuthToken] = useState('');
-const ep = new EndPoint();
 
 
+    const [username, setUsername, pass, setPass, name, setName, email, setEmail, pushToken, setPushToken, fetch_login, fetch_register] = useHomeScreen();
 /**
   http://172.16.2.20/api/v1/login
 {
@@ -102,28 +95,40 @@ const ep = new EndPoint();
     }, [pushToken]);
 
     return (
-       <View>
-           <ScrollView>
-                <Text style={{ marginTop: 50, fontSize: 25, alignItems:'center' }}>Home!</Text>
-                <View
-                    style={styles.container}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => ep.fetch_login(username, pass, pushToken)}>
-                        <Text>Hardcode Login</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => ep.fetch_register(username, pass, email, name)}>
-                        <Text>Hardcode Register</Text>
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => fetch_token()}>
-                        <Text>Hardcode Token</Text>
-                    </TouchableOpacity> */}
-                </View>
-           </ScrollView>
+        <View style={styles.container}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    placeholderTextColor="#4b5d67"
+                    // onSubmitEditing= {()=>this.password.focus()}
+                    onChangeText={text => {
+                        setEmail(text);
+                    }}
+                    value={email}
+                />
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#4b5d67"
+                secureTextEntry={true}
+                // onSubmitEditing= {()=>this.password.focus()}
+                onChangeText={text => {
+                    setPass(text);
+                }}
+                value={pass}
+            />
+            <View style={{flexDirection:'row'}}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => fetch_login(email, pass, pushToken)}>
+                    <Text>Login</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => fetch_register(username, pass, email, name)}>
+                    <Text>Register</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -133,9 +138,10 @@ export default HomeScreen
 const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
-        backgroundColor: '#DDDDDD',
+        backgroundColor: '#ad9d9d',
         padding: 10,
-        width: 200,
+        width: 100,
+        margin: 10,
         marginTop: 20,
         borderRadius: 20,
         justifyContent : 'center'
@@ -156,5 +162,22 @@ const styles = StyleSheet.create({
         left: -150,
         top: -20
 
+    },
+    input: {
+        width: 300,
+        borderRadius: 300/2,
+        backgroundColor: '#838383',
+        padding: 15,
+        margin: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#d9adad',
+        alignItems: 'center',
+        justifyContent: 'center',  
     }
 });
