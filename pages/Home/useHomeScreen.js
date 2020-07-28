@@ -22,7 +22,7 @@ const useHomeScreen=()=>{
                 'Content-Type': 'application/json'
             }
         };
-        axios.post("http://172.16.2.20/api/v1/login", {
+        axios.post(ep.post_login(), {
             user: username,
             password: pass
         }).then(async res => {
@@ -38,7 +38,7 @@ const useHomeScreen=()=>{
                         'X-User-Id': res.data.data.userId,
                     }
                 };
-                axios.post("http://172.16.2.20/api/v1/push.token", {
+                axios.post(ep.post_pushToken(), {
                     type: "gcm",
                     value: pushToken,
                     appName: "com.belajartab"
@@ -70,7 +70,7 @@ const useHomeScreen=()=>{
                 'Content-Type': 'application/json'
             }
         };
-        axios.post("http://172.16.2.20/api/v1/users.register", {
+        axios.post(ep.post_register(), {
             username: username,
             pass: pass,
             name: name,
