@@ -1,7 +1,7 @@
 //This is an example code for Bottom Navigation//
 import React, {useEffect, useState} from 'react';
 //import react in our code.
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, TextInput} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, TextInput, FlatList} from 'react-native';
 //import all the basic component we have used
 import FlexBox from '../FlexBox';
 import useHomeScreen from './useHomeScreen';
@@ -13,13 +13,15 @@ import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage'
 import { lessOrEq } from 'react-native-reanimated';
 
-const HomeScreen = () => {
+const HomeScreen = ({ route, navigation }) => {
 
 // const[username, setUsername] = useState('admin');
 // const[pass, setPass] = useState('adminadmin');
 
 
-    const [username, setUsername, pass, setPass, name, setName, email, setEmail, pushToken, setPushToken, fetch_login, fetch_register] = useHomeScreen();
+    const [username, setUsername, pass, setPass, name, setName, email,
+        setEmail, pushToken, setPushToken, fetch_login, fetch_register,
+        fetch_channelList, fetch_groupList, channel, groups] = useHomeScreen();
 /**
   http://172.16.2.20/api/v1/login
 {
@@ -94,6 +96,8 @@ const HomeScreen = () => {
         console.log(`Data push Token ${pushToken}`);
     }, [pushToken]);
 
+
+
     return (
         <View style={styles.container}>
                 <TextInput
@@ -128,8 +132,24 @@ const HomeScreen = () => {
                     onPress={() => fetch_register(username, pass, email, name)}>
                     <Text>Register</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => fetch_groupList()}>
+                    <Text>Channel List</Text>
+                </TouchableOpacity>
+            <FlatList
+                    keyExtractor={(item, index) => item._id }
+                    data={ groups }
+                    renderItem={({ item }) => <Text>{item.name}</Text>}
+            />
             </View>
+            {/* <FlatList data={[
+                { key: channel },
+            ]}
+                renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+                />     */}
         </View>
+        
     )
 }
 
@@ -179,5 +199,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9adad',
         alignItems: 'center',
         justifyContent: 'center',  
-    }
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+    },
 });

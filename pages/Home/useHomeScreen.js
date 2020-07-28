@@ -7,14 +7,17 @@ import EndPoint from '../../config/endpoint';
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 const useHomeScreen=()=>{
-    const [username, setUsername] = useState('');
-    const [pass, setPass] = useState('');
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('dwayne');
+    const [pass, setPass] = useState('Med1xsoft');
+    const [email, setEmail] = useState('dwayne');
     const [name, setName] = useState('');
     const [pushToken, setPushToken] = useState('');
     const [userId, setUserId] = useState('');
     const [authToken, setAuthToken] = useState('');
+    const [channel, setChannel] = useState('');
+    const [groups, setGroups] = useState([]);
     const ep = new EndPoint();
+
 
     fetch_login= (username, pass, pushToken) =>{
         let axiosConfig = {
@@ -28,8 +31,8 @@ const useHomeScreen=()=>{
         }).then(async res => {
             console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
             if (res.data.status == "success") {
-                // setUserId(res.data.data.userId);
-                // setAuthToken(res.data.data.authToken);
+                setUserId(res.data.data.userId);
+                setAuthToken(res.data.data.authToken);
 
                 let axiosConfig = {
                     headers: {
@@ -86,6 +89,53 @@ const useHomeScreen=()=>{
                 // console.log(`${EndPoint().get_login()}`);
             });
     }
-    return [username,setUsername, pass,setPass, name,setName, email, setEmail, pushToken,setPushToken, fetch_login, fetch_register];
+    
+    fetch_channelList = () => {
+        let data = '';
+        var config = {
+            method: 'get',
+            url: ep.post_channelList(),
+            headers: {
+                'X-Auth-Token': authToken,
+                'X-User-Id': userId
+            },
+            data: data
+        };
+        axios(config)
+            .then(function (response) {
+                console.log(`Data Channel List : ${JSON.stringify(response.data, null, 2)}`);
+                setChannel(response.data.channels[0].name);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            console.log(`ini channel ${channel}`);
+    }
+
+    fetch_groupList = () => {
+        let data = '';
+        var config = {
+            method: 'get',
+            url: ep.get_groupList(),
+            headers: {
+                'X-Auth-Token': authToken,
+                'X-User-Id': userId
+            },
+            data: data
+        };
+        axios(config)
+            .then(function (response) {
+                console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
+                setGroups(response.data.groups);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            console.log(`ini channel ${groups}`);
+    }
+
+    return [username,setUsername, pass,setPass, name,setName, email, 
+        setEmail, pushToken,setPushToken, fetch_login, fetch_register, 
+        fetch_channelList, fetch_groupList, channel, groups];
 }
 export default useHomeScreen;
