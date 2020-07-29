@@ -140,37 +140,12 @@ const useHomeScreen=()=>{
             });
             console.log(`ini channel ${groups}`);
     }
-    // fetch_groupHistory = () => {
-    //     let data = '';
-    //     let roomId ='';
-    //     var config = {
-    //         headers: {
-    //             'X-Auth-Token': "HoqVTKNYab_g_Z2FFKRaxHF55hJaRwcB3CfB9jwa8tY",
-    //             'X-User-Id': "AWNyZZzbKEfa3iwAY"
-    //         },
-    //         data: data
-    //     };
-
-    //     axios.get(ep.get_historyChat(roomId), {
-    //         roomId : roomId
-    //     }).then(async res => {
-    //         console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
-    //         if (res.data.status == "success") {
-    //             // props.navigation.navigate('Chat')
-    //         }
-    //     })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //             // console.log(`${EndPoint().get_login()}`);
-    //         });
-    // }
 
     fetch_groupHistory=(roomId)=>{
     var data = '';
 
     var config = {
         method: 'get',
-        // url: `http://172.16.2.20/api/v1/groups.history?roomId=y7ERtLHw8NR4MDRae`,
         url: ep.get_historyChat(roomId),
         headers: {
             'X-Auth-Token': authToken,

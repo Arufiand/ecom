@@ -34,7 +34,7 @@ const HomeScreen = ({ route, navigation }) => {
                     <ListItem
                         title={item.name}
                         subtitle={item.ts}
-                        // rightSubtitle={item.msgs == 0 ? null : <CardMenu title={item.msgs} />}
+                        rightSubtitle={item.msg == 0 ? null : <CardMenu title={item.msg} />}
                     // rightSubtitle={<CardMenu title={item.count_chat} />}
                     />
                 </View>
@@ -171,7 +171,7 @@ export default HomeScreen
 const CardMenu = ({ title }) => {
     return (
         <View style={{
-            backgroundColor: Colors.default_card_blue,
+            backgroundColor: '#2AC2FC',
             width: responsiveWidth(5),
             height: responsiveWidth(5),
             justifyContent: 'center',
@@ -182,7 +182,7 @@ const CardMenu = ({ title }) => {
             marginRight: -5
         }}>
             <View style={{ justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 10, textAlign: 'center', color: Colors.white }}>{title}</Text>
+                <Text style={{ fontSize: 10, textAlign: 'center', color: '#FFFFFF' }}>{title}</Text>
             </View>
         </View>
     );
