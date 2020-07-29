@@ -9,6 +9,8 @@ import axios from 'axios';
 //import Onesignal
 import OneSignal from 'react-native-onesignal';
 import AsyncStorage from '@react-native-community/async-storage';
+import { ListItem } from 'react-native-elements';
+import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage'
 import { lessOrEq } from 'react-native-reanimated';
@@ -22,6 +24,23 @@ const HomeScreen = ({ route, navigation }) => {
     const [username, setUsername, pass, setPass, name, setName, email,
         setEmail, pushToken, setPushToken, fetch_login, fetch_register,
         fetch_channelList, fetch_groupList, channel, groups] = useHomeScreen();
+
+//onPress={() => { showChatObrolan(index); }}
+
+    const renderItem = ({ item, index }) => {
+        return (
+            <TouchableOpacity activeOpacity={0.5} onPress={() => {fetch_groupHistory(item._id); }}>  
+                <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: '#ad9d9d' }}>
+                    <ListItem
+                        title={item.name}
+                        subtitle={item.ts}
+                        // rightSubtitle={item.msgs == 0 ? null : <CardMenu title={item.msgs} />}
+                    // rightSubtitle={<CardMenu title={item.count_chat} />}
+                    />
+                </View>
+            </TouchableOpacity>
+        );
+    }
 /**
   http://172.16.2.20/api/v1/login
 {
@@ -37,66 +56,63 @@ const HomeScreen = ({ route, navigation }) => {
 }
  **/
 
-
-/**
+  /**
  * This useEffect for OneSignal Only
  * app ids on Label Local Storage
 */
-    useEffect(() => {
+  useEffect(() => {
 
-        const onReceived = (notification) => {
-            // console.log("Notification received: ", notification);
-            dispatchNotif({ type: "NOTIFICATION_RECEIVED", notification });
-            setNotifComing(true);
+    const onReceived = (notification) => {
+      // console.log("Notification received: ", notification);
+      dispatchNotif({ type: "NOTIFICATION_RECEIVED", notification });
+      setNotifComing(true);
+    }
+
+    const onOpened = (openResult) => {
+      console.log('Message -> ', JSON.stringify(openResult.notification.payload.body, null, 2));
+      console.log('Data -> ', JSON.stringify(openResult.notification.payload.additionalData, null, 2));
+      console.log('isActive -> ', JSON.stringify(openResult.notification.isAppInFocus, null, 2));
+      console.log('openResult -> ', JSON.stringify(openResult, null, 2));
+    }
+
+    const onIds = async (device) => {
+      console.log(`Device info: -> ${JSON.stringify(device, null, 2)}`);
+      // console.log(`Push Token Device -> ${JSON.stringify(device.pushToken,null,2)}`);
+      await AsyncStorage.getItem("signal_id").then(async (result) => {
+        setPushToken(device.pushToken);
+        if (result == null) {
+          // console.log("There is no OneSignal ID");
+          await AsyncStorage.setItem(label.onesignal_id, device.userId);
+          await AsyncStorage.setItem(label.onesignal_push_token, device.pushToken);
+        } else {
+          console.log("Already have OneSignal ID");
         }
+        // console.log(`ini onesignal push token simpan : ${pushToken}`);
+      });
+    }
 
-        const onOpened = (openResult) => {
-            console.log('Message -> ', JSON.stringify(openResult.notification.payload.body, null, 2));
-            console.log('Data -> ', JSON.stringify(openResult.notification.payload.additionalData, null, 2));
-            console.log('isActive -> ', JSON.stringify(openResult.notification.isAppInFocus, null, 2));
-            console.log('openResult -> ', JSON.stringify(openResult, null, 2));
-        }
+    const initOneSignal = () => {
+      // console.log("Init OneSignal ID");
+      OneSignal.init("14092b00-09d4-48e0-9218-5ec4c3a49c7f");
+      // Disable Message Box
+      OneSignal.inFocusDisplaying(0);
+      OneSignal.addEventListener('received', onReceived);
+      OneSignal.addEventListener('opened', onOpened);
+      OneSignal.addEventListener('ids', onIds);
+    };
 
-        const onIds = async (device) => {
-            console.log(`Device info: -> ${JSON.stringify(device, null, 2)}`);
-            // console.log(`Push Token Device -> ${JSON.stringify(device.pushToken,null,2)}`);
-            await AsyncStorage.getItem("signal_id").then(async (result) => {
-                setPushToken(device.pushToken);
-                if (result == null) {
-                    // console.log("There is no OneSignal ID");
-                    await AsyncStorage.setItem(label.onesignal_id, device.userId);
-                    await AsyncStorage.setItem(label.onesignal_push_token, device.pushToken);                    
-                } else {
-                    console.log("Already have OneSignal ID");
-                }
-                // console.log(`ini onesignal push token simpan : ${pushToken}`);
-            });
-        }
+    initOneSignal();
 
-        const initOneSignal = () => {
-            // console.log("Init OneSignal ID");
-            OneSignal.init("14092b00-09d4-48e0-9218-5ec4c3a49c7f");
-            // Disable Message Box
-            OneSignal.inFocusDisplaying(0);
-            OneSignal.addEventListener('received', onReceived);
-            OneSignal.addEventListener('opened', onOpened);
-            OneSignal.addEventListener('ids', onIds);
-        };
+    return () => {
+      OneSignal.removeEventListener('received', onReceived);
+      OneSignal.removeEventListener('opened', onOpened);
+      OneSignal.removeEventListener('ids', onIds);
+    }
+  }, []);
 
-        initOneSignal();
-
-        return () => {
-            OneSignal.removeEventListener('received', onReceived);
-            OneSignal.removeEventListener('opened', onOpened);
-            OneSignal.removeEventListener('ids', onIds);
-        }
-    }, []);
-
-    useEffect(() =>{
-        console.log(`Data push Token ${pushToken}`);
-    }, [pushToken]);
-
-
+  useEffect(() => {
+    console.log(`Data push Token ${pushToken}`);
+  }, [pushToken]);
 
     return (
         <View style={styles.container}>
@@ -137,23 +153,40 @@ const HomeScreen = ({ route, navigation }) => {
                     onPress={() => fetch_groupList()}>
                     <Text>Channel List</Text>
                 </TouchableOpacity>
-            <FlatList
+                </View>
+                <View style= {{flexDirection: 'row'}}>
+                 <FlatList
                     keyExtractor={(item, index) => item._id }
                     data={ groups }
-                    renderItem={({ item }) => <Text>{item.name}</Text>}
-            />
-            </View>
-            {/* <FlatList data={[
-                { key: channel },
-            ]}
-                renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-                />     */}
+                    renderItem={renderItem}
+                   />
+                </View>
         </View>
         
     )
 }
 
 export default HomeScreen
+
+const CardMenu = ({ title }) => {
+    return (
+        <View style={{
+            backgroundColor: Colors.default_card_blue,
+            width: responsiveWidth(5),
+            height: responsiveWidth(5),
+            justifyContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 4,
+            marginTop: 10,
+            marginRight: -5
+        }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ fontSize: 10, textAlign: 'center', color: Colors.white }}>{title}</Text>
+            </View>
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
     button: {

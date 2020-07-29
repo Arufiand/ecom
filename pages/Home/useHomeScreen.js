@@ -2,9 +2,12 @@
 import axios from 'axios';
 //This is an example code for Bottom Navigation//
 import React, { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import EndPoint from '../../config/endpoint';
+import chatNavigator from '../../config/navigator/chatNavigator'
 //import react in our code.
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import ChatNavigator from '../Chat/ChatScreen';
 
 const useHomeScreen=()=>{
     const [username, setUsername] = useState('dwayne');
@@ -17,6 +20,7 @@ const useHomeScreen=()=>{
     const [channel, setChannel] = useState('');
     const [groups, setGroups] = useState([]);
     const ep = new EndPoint();
+    const navigation = useNavigation();
 
 
     fetch_login= (username, pass, pushToken) =>{
@@ -65,7 +69,10 @@ const useHomeScreen=()=>{
                 console.log(error);
                 // console.log(`${EndPoint().get_login()}`);
             });
-    }
+
+        }
+    
+
 
     fetch_register = (username, pass, email, name) =>{
         let axiosConfig = {
@@ -132,6 +139,54 @@ const useHomeScreen=()=>{
                 console.log(error);
             });
             console.log(`ini channel ${groups}`);
+    }
+    // fetch_groupHistory = () => {
+    //     let data = '';
+    //     let roomId ='';
+    //     var config = {
+    //         headers: {
+    //             'X-Auth-Token': "HoqVTKNYab_g_Z2FFKRaxHF55hJaRwcB3CfB9jwa8tY",
+    //             'X-User-Id': "AWNyZZzbKEfa3iwAY"
+    //         },
+    //         data: data
+    //     };
+
+    //     axios.get(ep.get_historyChat(roomId), {
+    //         roomId : roomId
+    //     }).then(async res => {
+    //         console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
+    //         if (res.data.status == "success") {
+    //             // props.navigation.navigate('Chat')
+    //         }
+    //     })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //             // console.log(`${EndPoint().get_login()}`);
+    //         });
+    // }
+
+    fetch_groupHistory=(roomId)=>{
+    var data = '';
+
+    var config = {
+        method: 'get',
+        // url: `http://172.16.2.20/api/v1/groups.history?roomId=y7ERtLHw8NR4MDRae`,
+        url: ep.get_historyChat(roomId),
+        headers: {
+            'X-Auth-Token': authToken,
+            'X-User-Id': userId
+        },
+        data: data
+        
+    };
+    axios(config)
+        
+        .then(function (response) {
+            console.log(JSON.stringify(response.data, null, 2));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     return [username,setUsername, pass,setPass, name,setName, email, 

@@ -1,21 +1,21 @@
-import React, {component} from 'react';
+import React, { component } from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import Home from '../../pages/Home/HomeScreen';
+import Chat from '../../pages/Chat/ChatScreen';
 
 const Stack = createStackNavigator();
 
-const HomeNavigator = () => {
+const ChatNavigator = () => {
     return (
         <Stack.Navigator
             screenOptions={{
                 headerShown: false
             }}>
-            <Stack.Screen name="Home" options={{
+            <Stack.Screen name="Chat" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                
-            }} component={Home} />
+
+            }} component={Chat} />
         </Stack.Navigator>
     );
 }
 
-export default HomeNavigator;
+export default ChatNavigator;

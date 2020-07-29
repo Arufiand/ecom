@@ -21,4 +21,9 @@ export default class endpoint{
     get_groupList(){
         return globalEP + "/api/v1/groups.list"
     }
+
+    get_historyChat=(roomId)=>{
+        console.log(`url getHistory : ${globalEP}/api/v1/groups.history?roomId=${roomId}`);
+        return `${globalEP}/api/v1/groups.history?roomId=${roomId}`;
+    }
 }
