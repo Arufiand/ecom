@@ -3,17 +3,10 @@ import React, {useEffect, useState} from 'react';
 //import react in our code.
 import { Text, View, TouchableOpacity, StyleSheet, ScrollView, TextInput, FlatList} from 'react-native';
 //import all the basic component we have used
-import FlexBox from '../FlexBox';
 import useHomeScreen from './useHomeScreen';
-import axios from 'axios';
-//import Onesignal
-import OneSignal from 'react-native-onesignal';
-import AsyncStorage from '@react-native-community/async-storage';
-import { ListItem } from 'react-native-elements';
+import { ListItem} from 'react-native-elements';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import EndPoint from '../../config/endpoint';
-import label from '../../config/local_label_storage'
-import { lessOrEq } from 'react-native-reanimated';
+import Colors from '../../config/utils'
 
 const HomeScreen = ({ route, navigation }) => {
 
@@ -30,96 +23,30 @@ const HomeScreen = ({ route, navigation }) => {
     const renderItem = ({ item, index }) => {
         return (
             <TouchableOpacity activeOpacity={0.5} onPress={() => {fetch_groupHistory(item._id); }}>  
-                <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: '#ad9d9d' }}>
-                    <ListItem
+                <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
+                    {item.count != 0 ? <ListItem
                         title={item.name}
                         subtitle={item.ts}
                         rightSubtitle={item.msg == 0 ? null : <CardMenu title={item.msg} />}
                     // rightSubtitle={<CardMenu title={item.count_chat} />}
-                    />
+                    /> : 
+                        <ListItem
+                                title={"Tidak Ada Data"}
+                                subtitle={"Tidak Ada Data"}
+                        />
+                    }
                 </View>
             </TouchableOpacity>
         );
     }
-/**
-  http://172.16.2.20/api/v1/login
-{
-    "user" : "Badui",
-    "pass" : "med1xsoft"
-}
-  http://172.16.2.20/api/v1/users.register
-{
-    "username" : "Danny",
-    "email" : "Arufiand@gmail.com",
-    "pass" : "med1xsoft",
-    "name" : "Arufiand"
-}
- **/
-
-  /**
- * This useEffect for OneSignal Only
- * app ids on Label Local Storage
-*/
-  useEffect(() => {
-
-    const onReceived = (notification) => {
-      // console.log("Notification received: ", notification);
-      dispatchNotif({ type: "NOTIFICATION_RECEIVED", notification });
-      setNotifComing(true);
-    }
-
-    const onOpened = (openResult) => {
-      console.log('Message -> ', JSON.stringify(openResult.notification.payload.body, null, 2));
-      console.log('Data -> ', JSON.stringify(openResult.notification.payload.additionalData, null, 2));
-      console.log('isActive -> ', JSON.stringify(openResult.notification.isAppInFocus, null, 2));
-      console.log('openResult -> ', JSON.stringify(openResult, null, 2));
-    }
-
-    const onIds = async (device) => {
-      console.log(`Device info: -> ${JSON.stringify(device, null, 2)}`);
-      // console.log(`Push Token Device -> ${JSON.stringify(device.pushToken,null,2)}`);
-      await AsyncStorage.getItem("signal_id").then(async (result) => {
-        setPushToken(device.pushToken);
-        if (result == null) {
-          // console.log("There is no OneSignal ID");
-          await AsyncStorage.setItem(label.onesignal_id, device.userId);
-          await AsyncStorage.setItem(label.onesignal_push_token, device.pushToken);
-        } else {
-          console.log("Already have OneSignal ID");
-        }
-        // console.log(`ini onesignal push token simpan : ${pushToken}`);
-      });
-    }
-
-    const initOneSignal = () => {
-      // console.log("Init OneSignal ID");
-      OneSignal.init("14092b00-09d4-48e0-9218-5ec4c3a49c7f");
-      // Disable Message Box
-      OneSignal.inFocusDisplaying(0);
-      OneSignal.addEventListener('received', onReceived);
-      OneSignal.addEventListener('opened', onOpened);
-      OneSignal.addEventListener('ids', onIds);
-    };
-
-    initOneSignal();
-
-    return () => {
-      OneSignal.removeEventListener('received', onReceived);
-      OneSignal.removeEventListener('opened', onOpened);
-      OneSignal.removeEventListener('ids', onIds);
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log(`Data push Token ${pushToken}`);
-  }, [pushToken]);
 
     return (
         <View style={styles.container}>
+            <View style = {styles.circle}></View>
                 <TextInput
                     style={styles.input}
                     placeholder="Username"
-                    placeholderTextColor="#4b5d67"
+                    placeholderTextColor={Colors.placeHolders}
                     // onSubmitEditing= {()=>this.password.focus()}
                     onChangeText={text => {
                         setEmail(text);
@@ -129,7 +56,7 @@ const HomeScreen = ({ route, navigation }) => {
             <TextInput
                 style={styles.input}
                 placeholder="Password"
-                placeholderTextColor="#4b5d67"
+                placeholderTextColor={Colors.placeHolders}
                 secureTextEntry={true}
                 // onSubmitEditing= {()=>this.password.focus()}
                 onChangeText={text => {
@@ -171,7 +98,7 @@ export default HomeScreen
 const CardMenu = ({ title }) => {
     return (
         <View style={{
-            backgroundColor: '#2AC2FC',
+            backgroundColor: Colors.cardMenu,
             width: responsiveWidth(5),
             height: responsiveWidth(5),
             justifyContent: 'center',
@@ -182,7 +109,7 @@ const CardMenu = ({ title }) => {
             marginRight: -5
         }}>
             <View style={{ justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 10, textAlign: 'center', color: '#FFFFFF' }}>{title}</Text>
+                <Text style={{ fontSize: 10, textAlign: 'center', color: Colors.buttons }}>{title}</Text>
             </View>
         </View>
     );
@@ -191,7 +118,7 @@ const CardMenu = ({ title }) => {
 const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
-        backgroundColor: '#ad9d9d',
+        backgroundColor: Colors.buttons,
         padding: 10,
         width: 100,
         margin: 10,
@@ -210,7 +137,7 @@ const styles = StyleSheet.create({
         width: 500,
         height: 500,
         borderRadius : 500/2,
-        backgroundColor: '#7F00FF',
+        backgroundColor: Colors.circle,
         position: 'absolute',
         left: -150,
         top: -20
@@ -219,17 +146,18 @@ const styles = StyleSheet.create({
     input: {
         width: 300,
         borderRadius: 300/2,
-        backgroundColor: '#838383',
+        backgroundColor: Colors.input,
         padding: 15,
         margin: 5,
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign : 'center'
 
 
     },
     container: {
         flex: 1,
-        backgroundColor: '#d9adad',
+        backgroundColor: Colors.container,
         alignItems: 'center',
         justifyContent: 'center',  
     },

@@ -1,4 +1,4 @@
-const globalEP = "http://172.16.200.56:3000/";
+const globalEP = "http://172.16.200.56:3000";
 
 export default class endpoint{
 
