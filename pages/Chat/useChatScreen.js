@@ -1,10 +1,33 @@
-import React from 'react'
-import { View, Text } from 'react-native';
-import EndPoint from '../../config/endpoint'
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
+import EndPoint from '../../config/endpoint';
 
-const useChatScreen = () => {
+const useChatScreen = ({route}) => {
 
     const ep = new EndPoint();
+
+    const roomId = route.params;
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        setMessages([
+            {
+                _id: 1,
+                text: 'Hello developer',
+                createdAt: new Date(),
+                user: {
+                    _id: 2,
+                    name: 'React Native',
+                    avatar: 'https://placeimg.com/140/140/any',
+                },
+            },
+        ])
+    }, [])
+
+    const onSend = useCallback((messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    }, [])
+
 
     fetch_channelList = () =>{
 
@@ -26,7 +49,8 @@ const useChatScreen = () => {
                 // console.log(`${EndPoint().get_login()}`);
             });
     }
-    return[];
+
+    return[messages, setMessages, roomId, fetch_channelList ];
 }
 
 export default useChatScreen;

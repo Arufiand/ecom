@@ -1,30 +1,27 @@
-import React from 'react'
+import React, {useEffect, useState, useCallback} from 'react'
 import { Platform, KeyboardAvoidingView, SafeAreaView,Text, FlatList, View, StyleSheet } from 'react-native'
 import { GiftedChat } from 'react-native-gifted-chat';
 import useChatScreen from './useChatScreen';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 
-const ChatScreen = () => {
+
+
+const ChatScreen = ({route, navigation}) => {
+    // const roomId = route.params;
+    const [messages, setMessages, roomId, fetch_channelList] = useChatScreen({route});
+    console.log(`${roomId}`);
+
     return (
-    <View>
-    <FlatList
-        data={[
-            { key: 'Devin' },
-            { key: 'Dan' },
-            { key: 'Dominic' },
-            { key: 'Jackson' },
-            { key: 'James' },
-            { key: 'Joel' },
-            { key: 'John' },
-            { key: 'Jillian' },
-            { key: 'Jimmy' },
-            { key: 'Julie' },
-        ]}
-        renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
+        <GiftedChat
+            messages={messages}
+            onSend={messages => onSend(messages)}
+            user={{
+                _id: 1,
+            }}
         />
-    </View>
-    );
-
+    )
 }
 
 const styles = StyleSheet.create({

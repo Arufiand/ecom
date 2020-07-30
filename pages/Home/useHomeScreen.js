@@ -1,14 +1,12 @@
 
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 //This is an example code for Bottom Navigation//
-import React, { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import EndPoint from '../../config/endpoint';
-//import react in our code.
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useEffect, useState } from 'react';
 //import Onesignal
 import OneSignal from 'react-native-onesignal';
-import AsyncStorage from '@react-native-community/async-storage';
+import EndPoint from '../../config/endpoint';
 
 const useHomeScreen=()=>{
     const [username, setUsername] = useState('Dwayne');
@@ -94,6 +92,8 @@ const useHomeScreen=()=>{
     useEffect(() => {
         console.log(`Data push Token ${pushToken}`);
     }, [pushToken]);
+
+
  
     fetch_login= (username, pass, pushToken) =>{
         let axiosConfig = {

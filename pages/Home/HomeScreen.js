@@ -1,12 +1,13 @@
 //This is an example code for Bottom Navigation//
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 //import react in our code.
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, TextInput, FlatList} from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ListItem } from 'react-native-elements';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
+import Colors from '../../config/utils';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
-import { ListItem} from 'react-native-elements';
-import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
-import Colors from '../../config/utils'
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = ({ route, navigation }) => {
 
@@ -21,13 +22,15 @@ const HomeScreen = ({ route, navigation }) => {
 //onPress={() => { showChatObrolan(index); }}
 
     const renderItem = ({ item, index }) => {
+        let roomId = item._id;
         return (
-            <TouchableOpacity activeOpacity={0.5} onPress={() => {fetch_groupHistory(item._id); }}>  
+            
+            <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', (roomId)); }}>  
                 <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
                     {item.count != 0 ? <ListItem
                         title={item.name}
                         subtitle={item.ts}
-                        rightSubtitle={item.msg == 0 ? null : <CardMenu title={item.msg} />}
+                        // rightSubtitle={item.msg == 0 ? null : <CardMenu title={item.msg} />}
                     // rightSubtitle={<CardMenu title={item.count_chat} />}
                     /> : 
                         <ListItem
