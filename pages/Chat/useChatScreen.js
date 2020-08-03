@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import EndPoint from '../../config/endpoint';
+import label from '../../config/local_label_storage'
 
 const useChatScreen = ({route}) => {
 
@@ -17,7 +18,7 @@ const useChatScreen = ({route}) => {
                 createdAt: new Date(),
                 user: {
                     _id: 2,
-                    name: 'React Native',
+                    name: label.rc_user_name,
                     avatar: 'https://placeimg.com/140/140/any',
                 },
             },

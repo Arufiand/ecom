@@ -8,18 +8,20 @@ import Colors from '../../config/utils';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import label from '../../config/local_label_storage';
 
 const HomeScreen = ({ route, navigation }) => {
 
-// const[username, setUsername] = useState('admin');
-// const[pass, setPass] = useState('adminadmin');
+    const oneSignalPushToken = label.onesignal_push_token;
+    // const rcAuthToken = label.rc_user_auth_token;
+    // const rcUserId = label.rc_user_id;
 
+    // console.log(`RC AuthToken : ${rcAuthToken}`);
+    // console.log(`RC UserId : ${rcUserId}`);
 
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, pushToken, setPushToken, fetch_login, fetch_register,
-        fetch_channelList, fetch_groupList, channel, groups] = useHomeScreen();
-
-//onPress={() => { showChatObrolan(index); }}
+        setEmail, fetch_login, fetch_register,fetch_groupList, groups] = useHomeScreen();
 
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
@@ -27,13 +29,12 @@ const HomeScreen = ({ route, navigation }) => {
             
             <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', (roomId)); }}>  
                 <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
-                    {item.count != 0 ? <ListItem
+                    {item.count != 0 ? 
+                    <ListItem
                         title={item.name}
-                        subtitle={item.ts}
-                        // rightSubtitle={item.msg == 0 ? null : <CardMenu title={item.msg} />}
-                    // rightSubtitle={<CardMenu title={item.count_chat} />}
+                        subtitle={item.lastMessage.msg ? item.lastMessage.msg : "Belum Ada Pesan" } 
                     /> : 
-                        <ListItem
+                    <ListItem
                                 title={"Tidak Ada Data"}
                                 subtitle={"Tidak Ada Data"}
                         />
@@ -70,7 +71,7 @@ const HomeScreen = ({ route, navigation }) => {
             <View style={{flexDirection:'row'}}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => fetch_login(email, pass, pushToken)}>
+                    onPress={() => fetch_login(email, pass, oneSignalPushToken)}>
                     <Text>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -81,7 +82,7 @@ const HomeScreen = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => fetch_groupList()}>
-                    <Text>Channel List</Text>
+                    <Text>Group List</Text>
                 </TouchableOpacity>
                 </View>
                 <View style= {{flexDirection: 'row'}}>
