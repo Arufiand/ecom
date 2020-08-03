@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage'
+import { GiftedChat } from 'react-native-gifted-chat';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const useChatScreen = ({route}) => {
 
@@ -11,6 +13,7 @@ const useChatScreen = ({route}) => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
+        get_history_message();
         setMessages([
             {
                 _id: 1,
@@ -29,29 +32,33 @@ const useChatScreen = ({route}) => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
     }, [])
 
+    get_history_message = async () => {
 
-    fetch_channelList = () =>{
+        const authToken = await AsyncStorage.getItem(label.rc_user_auth_token)
+        const userId = await AsyncStorage.getItem(label.rc_user_id)
+        var data = '';
 
-        let axiosConfig = {
+        var config = {
+            method: 'get',
+            url: `http://172.16.200.56:3000/api/v1/groups.history?roomId=${roomId}`,
             headers: {
-                'X-Auth-Token': res.data.data.authToken,
-                'Content-Type': 'application/json',
-                'X-User-Id': res.data.data.userId,
-            }
+                'X-Auth-Token': authToken,
+                'X-User-Id': userId
+            },
+            data: data
         };
-        axios.post(ep.post_channelList(), axiosConfig).then(async res => {
-            console.log(" fetch_token : ", JSON.stringify(res.data, null, 2));
-            if (res.data.status == "success") {
-                console.log(` Token Sukses `);
-            }
-        })
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data, null, 2));
+            })
             .catch(function (error) {
                 console.log(error);
-                // console.log(`${EndPoint().get_login()}`);
             });
     }
+    
 
-    return[messages, setMessages, roomId, fetch_channelList ];
+    return[messages, setMessages,onSend, roomId, get_history_message ];
 }
 
 export default useChatScreen;

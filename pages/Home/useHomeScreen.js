@@ -43,9 +43,7 @@ const useHomeScreen=()=>{
                     await AsyncStorage.setItem(label.rc_user_auth_token, res.data.data.authToken);
                     await AsyncStorage.setItem(label.rc_user_name, res.data.data.me.name);
                     await AsyncStorage.setItem(label.rc_user_username, res.data.data.me.username);
-                    if (res.data.data.me.banners != null) {
-                        await AsyncStorage.setItem(label.rc_warning_banner, res.data.data.me.banners.text)
-                    }
+                    
                     
                 }
                 catch(err) {

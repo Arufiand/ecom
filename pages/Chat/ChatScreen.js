@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ChatScreen = ({route, navigation}) => {
     // const roomId = route.params;
-    const [messages, setMessages, roomId, authToken, userId, onSend, fetch_groupHistory] = useChatScreen({route});
+    const [messages, setMessages, onSend, roomId, get_history_message] = useChatScreen({route});
 
     return (
         <GiftedChat
