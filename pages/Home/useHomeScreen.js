@@ -3,11 +3,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 //This is an example code for Bottom Navigation//
-import { useEffect, useState } from 'react';
-//import Onesignal
-import OneSignal from 'react-native-onesignal';
+import { useState } from 'react';
 import EndPoint from '../../config/endpoint';
-import label from '../../config/local_label_storage'
+import label from '../../config/local_label_storage';
 
 const useHomeScreen=()=>{
     const [username, setUsername] = useState('Dwayne');

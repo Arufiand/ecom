@@ -40,7 +40,7 @@ const useChatScreen = ({route}) => {
 
         var config = {
             method: 'get',
-            url: `http://172.16.200.56:3000/api/v1/groups.history?roomId=${roomId}`,
+            url: ep.get_historyChat(roomId),
             headers: {
                 'X-Auth-Token': authToken,
                 'X-User-Id': userId

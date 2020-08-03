@@ -1,9 +1,7 @@
-import React, {useEffect, useState, useCallback} from 'react'
-import { Platform, KeyboardAvoidingView, SafeAreaView,Text, FlatList, View, StyleSheet } from 'react-native'
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import useChatScreen from './useChatScreen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
 
 
 
