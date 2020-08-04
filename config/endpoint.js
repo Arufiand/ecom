@@ -26,4 +26,9 @@ export default class endpoint{
         console.log(`url getHistory : ${globalEP}/api/v1/groups.history?roomId=${roomId}`);
         return `${globalEP}/api/v1/groups.history?roomId=${roomId}`;
     }
+
+    post_message=()=>{
+        console.log(`url postMessage : ${globalEP}/api/v1/chat.sendMessage`);
+        return `${globalEP}/api/v1/chat.sendMessage`;
+    }
 }

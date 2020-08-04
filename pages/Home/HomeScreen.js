@@ -21,13 +21,13 @@ const HomeScreen = ({ route, navigation }) => {
     // console.log(`RC UserId : ${rcUserId}`);
 
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register,fetch_groupList, groups] = useHomeScreen();
+        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId] = useHomeScreen();
 
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
         return (
             
-            <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', (roomId)); }}>  
+            <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', {roomId, rcAuthToken,rcUserId}); }}>  
                 <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
                     {item.count != 0 ? 
                     <ListItem

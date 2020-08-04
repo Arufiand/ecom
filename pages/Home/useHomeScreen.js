@@ -154,6 +154,6 @@ const useHomeScreen=()=>{
     }
 
     return [username,setUsername, pass,setPass, name,setName, email, 
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups];
+        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken,rcUserId];
 }
 export default useHomeScreen;
