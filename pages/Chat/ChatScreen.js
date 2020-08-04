@@ -2,10 +2,6 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import useChatScreen from './useChatScreen';
-import AsyncStorage from '@react-native-community/async-storage';
-import local_label_storage from '../../config/local_label_storage';
-
-
 
 
 const ChatScreen = ({route, navigation}) => {
