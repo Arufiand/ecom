@@ -1,34 +1,45 @@
-const globalEP = "http://172.16.200.56:3000";
+const globalEP = {
+    http : "http://172.16.200.56:3000",
+    ws:    "ws://172.16.200.56:3000/websocket"
+};
 
 export default class endpoint{
 
+    ws_connection () {
+        return globalEP.ws;
+    }
+
+    ws_rocket_chat_conn () {
+        return JSON.stringify({ "msg": "connect", "version": "1", "support": ["1"] });
+    }
+
     post_login () {
-        return globalEP + "/api/v1/login";
+        return globalEP.http + "/api/v1/login";
     }
     
     post_pushToken() {
-        return globalEP + "/api/v1/push.token"
+        return globalEP.http + "/api/v1/push.token"
     }
       
     post_register() {
-        return globalEP + "/api/v1/users.register"
+        return globalEP.http + "/api/v1/users.register"
     }
 
     get_channelList(){
-        return globalEP + "/api/v1/channels.list"
+        return globalEP.http + "/api/v1/channels.list"
     }
 
     get_groupList(){
-        return globalEP + "/api/v1/groups.list"
+        return globalEP.http + "/api/v1/groups.list"
     }
 
     get_historyChat=(roomId)=>{
-        console.log(`url getHistory : ${globalEP}/api/v1/groups.history?roomId=${roomId}`);
-        return `${globalEP}/api/v1/groups.history?roomId=${roomId}`;
+        console.log(`url getHistory : ${globalEP.http}/api/v1/groups.history?roomId=${roomId}`);
+        return `${globalEP.http}/api/v1/groups.history?roomId=${roomId}`;
     }
 
     post_message=()=>{
-        console.log(`url postMessage : ${globalEP}/api/v1/chat.sendMessage`);
-        return `${globalEP}/api/v1/chat.sendMessage`;
+        console.log(`url postMessage : ${globalEP.http}/api/v1/chat.sendMessage`);
+        return `${globalEP.http}/api/v1/chat.sendMessage`;
     }
 }

@@ -3,12 +3,13 @@ import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/st
 import { StackActions } from '@react-navigation/native';
 import HomeScreen from '../pages/Home/HomeScreen';
 import ChatScreen from '../pages/Chat/ChatScreen';
+import TutorialScreen from '../pages/Tutorial/TutorialScreen';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
     return (
-        <Stack.Navigator initialRouteName="Home"
+        <Stack.Navigator initialRouteName="Tutorial"
             screenOptions={{
                 headerShown: false
             }}>
@@ -18,6 +19,9 @@ const Router = () => {
                 <Stack.Screen name="Chat" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 }} component={ChatScreen}/>
+                <Stack.Screen name="Tutorial" options={{
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                }} component={TutorialScreen}/>
         </Stack.Navigator>
     )
 }
