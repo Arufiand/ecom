@@ -1,26 +1,25 @@
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
-// import useTutorial from './UseTutorial';
+import { Text, View, TouchableOpacity } from 'react-native';
 import useTutorial from './useTutorial';
 
 
-const TutorialScreen =({route, navigation})=> {
-    const [ws_open, ws_onMessage, ws_close]= useTutorial({route})
+const TutorialScreen = ({ route, navigation }) => {
+    const [a, ws_rc_login_token] = useTutorial({ route });
 
     useEffect(() => {
+        
+        // ws_rc_login_token();
+        
+        // return () => {
+        //     ws_rc_login_token();
+        // }
+    }, []);
 
-        ws_open()
-        try {
-            ws_onMessage()
-        }
-        catch (error) {
-            ws_close()
-        }
-    }, []); 
-   
     return (
         <View>
-            <Text></Text>
+            <TouchableOpacity onPress={ws_rc_login_token}>
+                <Text>Login</Text>
+            </TouchableOpacity>
         </View>
     )
 }

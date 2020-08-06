@@ -2,17 +2,69 @@ import AsyncStorage from '@react-native-community/async-storage';
 //import react navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import OneSignal from 'react-native-onesignal';
 import label from './config/local_label_storage';
 import Router from './config/router';
-
+import endpoint from './config/endpoint';
+import AppContext from './config/appContext';
 
 const Stack = createStackNavigator();
 
 const App=({navigation})=>{
-
+  const ep = new endpoint();
+  const ws = new WebSocket(ep.ws_connection())
+  const [response, setResponse] = useState('')
   useEffect(() => {
+
+    const ws_open = () => {
+      ws.onopen = () => {
+        ws.send(ep.ws_rocket_chat_conn());
+        console.log(`socket connected!`);
+      }
+    }
+
+    const ws_close = () => {
+      ws.onclose = () => {
+        console.log(`Socket Disconected!`);
+        try {
+          ws_open()
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    const ws_onMessage = () => {
+      ws.onmessage = evt => {
+        // on receiving a message, add it to the list of messages
+        const message = JSON.parse(evt.data)
+        setResponse(message)
+        console.log(`ini isi message ${JSON.stringify(message,null, 2)}`);
+        if (message.msg == "ping") {
+          ws.send(ep.ws_rocket_ping())
+          setResponse(message)
+        }
+
+        setResponse()
+        // if (message.msg == "connected") {
+        //   ws.send(ep.ws_rocket_login_token())
+        // }
+        // if (message.msg == "updated") {
+
+        // }
+
+      }
+    }
+    
+    ws_open()
+    try {
+      ws_onMessage()
+    }
+    catch (error) {
+      ws_close()
+    }
+
 
     const onReceived = (notification) => {
       // console.log("Notification received: ", notification);
@@ -62,15 +114,27 @@ const App=({navigation})=>{
     }
   }, []);
 
+  const authContext = useMemo(
+    () => ({
+      onSendRocketChat: data => {
+        ws.send(data);
+        console.log("On send rocket chat function");
+      }
+  }), []);
+
     // useEffect(() => {
     //     console.log(`Data push Token ${pushToken}`);
     // }, [pushToken]);
 
   return(
-    <NavigationContainer>
-      <Router />
-    </NavigationContainer>
+    <AppContext.Provider value={{ authContext, response }}>
+      <NavigationContainer>
+        <Router />
+      </NavigationContainer>
+    </AppContext.Provider>
   )
 }
+
+export const useStore = () => useContext(AppContext);
 
 export default App;
