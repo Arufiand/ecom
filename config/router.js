@@ -1,8 +1,7 @@
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
-import { StackActions } from '@react-navigation/native';
-import HomeScreen from '../pages/Home/HomeScreen';
 import ChatScreen from '../pages/Chat/ChatScreen';
+import HomeScreen from '../pages/Home/HomeScreen';
 import TutorialScreen from '../pages/Tutorial/TutorialScreen';
 
 const Stack = createStackNavigator();

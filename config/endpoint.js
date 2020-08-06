@@ -13,6 +13,21 @@ export default class endpoint{
         return JSON.stringify({ "msg": "connect", "version": "1", "support": ["1"] });
     }
 
+    ws_rocket_ping() {
+        return JSON.stringify({ "msg": "ping" });
+    }
+
+    ws_rocket_login_token(authToken) {
+        return JSON.stringify({
+            "msg": "method",
+            "method": "login",
+            "id": "42",
+            "params": [
+                { "resume": "ugFB2VYcrbf3J9ovSdKiLVG9qFD081iWZVyNMEJK9-Q" }
+            ]
+        })
+    }
+
     post_login () {
         return globalEP.http + "/api/v1/login";
     }

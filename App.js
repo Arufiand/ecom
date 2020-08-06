@@ -1,36 +1,17 @@
-import React, { useEffect, useState } from 'react';
-
-//import react navigation
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import Router from './config/router';
-import OneSignal from 'react-native-onesignal';
 import AsyncStorage from '@react-native-community/async-storage';
+//import react navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import React, { useEffect } from 'react';
+import OneSignal from 'react-native-onesignal';
 import label from './config/local_label_storage';
+import Router from './config/router';
+
 
 const Stack = createStackNavigator();
 
 const App=({navigation})=>{
 
-  /**
- http://172.16.2.20/api/v1/login
-{
-   "user" : "Badui",
-   "pass" : "med1xsoft"
-}
- http://172.16.2.20/api/v1/users.register
-{
-   "username" : "Danny",
-   "email" : "Arufiand@gmail.com",
-   "pass" : "med1xsoft",
-   "name" : "Arufiand"
-}
-**/
-
-  /**
- * This useEffect for OneSignal Only
- * app ids on Label Local Storage
-*/
   useEffect(() => {
 
     const onReceived = (notification) => {
@@ -47,7 +28,7 @@ const App=({navigation})=>{
     }
 
     const onIds = async (device) => {
-      console.log(`Device info: -> ${JSON.stringify(device, null, 2)}`);
+      // console.log(`Device info: -> ${JSON.stringify(device, null, 2)}`);
       // console.log(`Push Token Device -> ${JSON.stringify(device.pushToken,null,2)}`);
       await AsyncStorage.getItem("signal_id").then(async (result) => {
         // setPushToken(device.pushToken);
