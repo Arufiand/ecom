@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 //This is an example code for Bottom Navigation//
 import { useState } from 'react';
+import { useStore } from '../../App';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
@@ -18,8 +19,12 @@ const useHomeScreen=()=>{
     const [channel, setChannel] = useState('');
     const [groups, setGroups] = useState([]);
     const ep = new EndPoint();
-    const navigation = useNavigation();
+    const navigation = useNavigation(); 
     
+    const { authContext, response } = useStore();
+    
+
+
     fetch_login= async (username, pass, OneSignalPushToken) =>{
         let axiosConfig = {
             headers: {
@@ -32,6 +37,18 @@ const useHomeScreen=()=>{
         }, axiosConfig).then(async res => {
             console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
             if (res.data.status == "success") {
+                try {
+                    authContext.onSendRocketChat(ep.ws_rocket_login_token(res.data.data.authToken));
+                    console.log(`token berhasil`);
+                    try {
+                        authContext.onSendRocketChat(ep.ws_rocket_stream_notify_user(res.data.data.userId, ["message", "notification", "subscriptions-changed"]));
+                        console.log(`notify user berhasil`);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
 
 
                 try {
@@ -47,28 +64,29 @@ const useHomeScreen=()=>{
                 catch(err) {
                     console.log(err);
                 }
-                let axiosConfig = {
-                    headers: {
-                        'X-Auth-Token': res.data.data.authToken,
-                        'Content-Type': 'application/json',
-                        'X-User-Id': res.data.data.userId,
-                    }
-                };
-                axios.post(ep.post_pushToken(), {
-                    type: "gcm",
-                    value: OneSignalPushToken,
-                    appName: "com.belajartab"
+                // let axiosConfig = {
+                //     headers: {
+                //         'X-Auth-Token': res.data.data.authToken,
+                //         'Content-Type': 'application/json',
+                //         'X-User-Id': res.data.data.userId,
+                //     }
+                // };
+                // axios.post(ep.post_pushToken(), {
+                //     type: "gcm",
+                //     value: OneSignalPushToken,
+                //     appName: "com.belajartab"
 
-                }, axiosConfig).then(async res => {
-                    console.log(" fetch_token : ", JSON.stringify(res.data, null, 2));
-                    if (res.data.status == "success") {
-                        console.log(` Token Sukses `);
-                    }
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                        // console.log(`${EndPoint().get_login()}`);
-                    });
+                // }, axiosConfig).then(async res => {
+                //     console.log(" fetch_token : ", JSON.stringify(res.data, null, 2));
+                //     if (res.data.status == "success") {
+                //         console.log(` Token Sukses `);
+                        
+                //     }
+                // })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //         // console.log(`${EndPoint().get_login()}`);
+                //     });
 
 
             }
@@ -107,9 +125,7 @@ const useHomeScreen=()=>{
     }
 
     fetch_groupList = () => {
-        console.log(`ini Auth Token ${rcAuthToken}`);
-        console.log(`ini User Id ${rcUserId}`);
-
+        
         let data = '';
         var config = {
             method: 'get',
@@ -124,6 +140,19 @@ const useHomeScreen=()=>{
             .then(function (response) {
                 console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
+                try {
+                    console.log(`dia masuk sini`);
+                    for (let msg of response.data.groups) {
+                        const chat = {
+                            _id: msg._id,
+                            name: msg.name
+                        }
+                        let randomId = chat._id+chat._id;
+                        authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chat._id));
+                    }                    
+                } catch (err) {
+                    console.log(err);
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -146,7 +175,14 @@ const useHomeScreen=()=>{
     };
     axios(config)
         .then(function (response) {
-            console.log(JSON.stringify(response.data, null, 2));
+            // console.log(JSON.stringify(response.data, null, 2));
+            // try {
+            //     authContext.onSendRocketChat(ep.ws_rocket_stream_notify_room(roomId)).then(function (responses) {
+            //         console.log(`response dari stream notify room ${roomId} adalah ${JSON.stringify(responses)}`);
+            //     });
+            // } catch (error) {
+            //     console.log(error);
+            // }
         })
         .catch(function (error) {
             console.log(error);

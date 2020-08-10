@@ -4,21 +4,14 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
+import label from '../../config/local_label_storage';
 import Colors from '../../config/utils';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
-import label from '../../config/local_label_storage';
 
 const HomeScreen = ({ route, navigation }) => {
 
     const oneSignalPushToken = label.onesignal_push_token;
-    // const rcAuthToken = label.rc_user_auth_token;
-    // const rcUserId = label.rc_user_id;
-
-    // console.log(`RC AuthToken : ${rcAuthToken}`);
-    // console.log(`RC UserId : ${rcUserId}`);
 
     const [username, setUsername, pass, setPass, name, setName, email,
         setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId] = useHomeScreen();
@@ -28,6 +21,7 @@ const HomeScreen = ({ route, navigation }) => {
         return (
             
             <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', {roomId, rcAuthToken,rcUserId}); }}>  
+            {/* <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Tutorial', {roomId, rcAuthToken,rcUserId}); }}>   */}
                 <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
                     {item.count != 0 ? 
                     <ListItem

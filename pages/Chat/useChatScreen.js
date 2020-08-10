@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import EndPoint from '../../config/endpoint';
+import { useStore } from '../../App';
 
 const useChatScreen = ({ route }) => {
+
 
     const ep = new EndPoint();
 
@@ -11,12 +13,45 @@ const useChatScreen = ({ route }) => {
     const authToken = route.params.rcAuthToken;
     const userId = route.params.rcUserId;
 
-    console.log(`room id : ${roomId}, authToken = ${authToken}, user Id = ${userId}`);
+    const { authContext, response } = useStore();
+
+    // console.log(`room id : ${roomId}, authToken = ${authToken}, user Id = ${userId}`);
     const [messages, setMessages] = useState([]);
 
 
     useEffect(() => {
         get_history_message();
+        //ws_rc_streamNotifyRoom();
+        // ws_rc_streamRoomMessage(roomId);
+    }, [])
+
+
+    const ws_rc_streamNotifyRoom = useCallback((roomId) => {
+        authContext.onSendRocketChat(ep.ws_rocket_stream_notify_room(roomId))
+        console.log(`stream notify room berhasil`);
+    }, [])
+
+    const ws_rc_streamRoomMessage = useCallback((roomId) => {
+        authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(roomId))
+        console.log(`stream Room Message Berhasil`);
+    }, [])
+
+    const ws_rc_load_message = useCallback((roomId) => {
+        authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId)).then(function (response) {
+            for (let msg of response.data.messages) {
+                const chat = {
+                    _id: msg._id,
+                    text: msg.msg,
+                    createdAt: msg.ts.$date,
+                    user: {
+                        _id: msg.u._id,
+                        name: msg.u.name,
+                        avatar: 'https://placeimg.com/140/140/any',
+                    }
+                }
+                setMessages(prevArray => [...prevArray, chat])
+            }
+        })
     }, [])
 
     const onSend = useCallback( (messages = []) => {
@@ -45,8 +80,8 @@ const useChatScreen = ({ route }) => {
                 .catch(function (error) {
                     console.log(error);
                 });
-        
-     
+
+
 
     }, [])
 
@@ -66,7 +101,7 @@ const useChatScreen = ({ route }) => {
 
         axios(config)
             .then(function (response) {
-                // console.log(JSON.stringify(response.data, null, 2));
+
                 // looping untuk chat array
                 for (let msg of response.data.messages){
                     const chat = {

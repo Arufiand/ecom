@@ -17,13 +17,65 @@ export default class endpoint{
         return JSON.stringify({ "msg": "ping" });
     }
 
+    ws_rocket_stream_notify_room (roomId) {
+        return JSON.stringify({
+            "msg": "sub",
+            "id": "unique-id",
+            "name": "stream-notify-room",
+            "params": [
+                `${roomId}/typing`, true
+            ]
+        })
+    }
+
+    ws_rocket_stream_room_message(randomId, roomId) {
+        return JSON.stringify({
+            "msg": "sub",
+            "id": randomId,
+            "name": "stream-room-messages",
+            "params": [
+                roomId, false
+            ]
+        })
+    }
+
+    ws_rocket_stream_notify_user(userId, event) {
+        return JSON.stringify({
+            "msg": "sub",
+            "id": "unique-id",
+            "name": "stream-notify-user",
+            "params": [
+                `${userId}/${event}`,
+                true
+            ]
+        })
+    }
+
+    ws_rocket_load_history(room_id, gettime_start, gettime_end, count_load_message) {
+        return JSON.stringify({
+            "msg": "method",
+            "method": "loadHistory",
+            "id": "42",
+            "params": [room_id, { "$date": gettime_start }, count_load_message, { "$date": gettime_end }]
+        });
+    }
+
+    ws_rocket_load_lastest_history(roomId) {
+        return JSON.stringify({
+            "msg": "method",
+            "method": "loadHistory",
+            "id": "42",
+            "params": [roomId, null, 10, { "$date": 1480377601 }]
+        });
+    } 
+
     ws_rocket_login_token(authToken) {
         return JSON.stringify({
             "msg": "method",
             "method": "login",
             "id": "42",
             "params": [
-                { "resume": "ugFB2VYcrbf3J9ovSdKiLVG9qFD081iWZVyNMEJK9-Q" }
+                { "resume": authToken }
             ]
         })
     }

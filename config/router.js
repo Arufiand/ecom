@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 
 const Router = () => {
     return (
-        <Stack.Navigator initialRouteName="Tutorial"
+        <Stack.Navigator initialRouteName="Home"
             screenOptions={{
                 headerShown: false
             }}>

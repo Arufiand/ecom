@@ -9,12 +9,10 @@ const useTutorial = ({ route }) => {
     const { authContext, response } = useStore();
 
     useEffect(() => {
-        // authContext.onSendRocketChat(ep.ws_rocket_login_token());
-        // console.log(`berhasil login ndul`);
+
     }, []);
 
     const ws_rc_login_token = useCallback(() => {
-        // ws.send(ep.ws_rocket_login_token);
         authContext.onSendRocketChat(ep.ws_rocket_login_token());
         console.log(`berhasil login ndul`);
     },[])
