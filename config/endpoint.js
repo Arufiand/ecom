@@ -13,6 +13,17 @@ export default class endpoint{
         return JSON.stringify({ "msg": "connect", "version": "1", "support": ["1"] });
     }
 
+    ws_rocket_login_token(authToken) {
+        return JSON.stringify({
+            "msg": "method",
+            "method": "login",
+            "id": "42",
+            "params": [
+                { "resume": authToken }
+            ]
+        })
+    }
+
     ws_rocket_ping() {
         return JSON.stringify({ "msg": "ping" });
     }
@@ -69,16 +80,22 @@ export default class endpoint{
         });
     } 
 
-    ws_rocket_login_token(authToken) {
+    ws_rocket_send_message(roomId, message, messageId) {
         return JSON.stringify({
             "msg": "method",
-            "method": "login",
+            "method": "sendMessage",
             "id": "42",
             "params": [
-                { "resume": authToken }
+                {
+                    "_id": messageId, //roomId+userId+dateNow
+                    "rid": roomId,
+                    "msg": message
+                }
             ]
         })
     }
+
+
 
     post_login () {
         return globalEP.http + "/api/v1/login";

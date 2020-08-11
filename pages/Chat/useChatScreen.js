@@ -21,14 +21,16 @@ const useChatScreen = ({ route }) => {
 
     useEffect(() => {
         get_history_message();
-        //ws_rc_streamNotifyRoom();
-        // ws_rc_streamRoomMessage(roomId);
     }, [])
 
-
+    //#region websocket
     const ws_rc_streamNotifyRoom = useCallback((roomId) => {
         authContext.onSendRocketChat(ep.ws_rocket_stream_notify_room(roomId))
         console.log(`stream notify room berhasil`);
+
+          // useEffect(() => {
+    //     console.log(`abc ${messages}`);
+    // }, [messages]);
     }, [])
 
     const ws_rc_streamRoomMessage = useCallback((roomId) => {
@@ -54,37 +56,47 @@ const useChatScreen = ({ route }) => {
         })
     }, [])
 
+
+    //#endregion
+    
     const onSend = useCallback( (messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        console.log(JSON.stringify(messages, null, 2));
-        console.log(JSON.stringify(messages[0].text, null, 2));
+        let message = messages[0].text;
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+        let start = Date.now();
+        let messageId = roomId + start;
 
+        console.log(`ini isi MessageId : ${messageId}`);
+        console.log(`Isi Message : ${message}`);
 
-            var data = JSON.stringify({ "message": { "rid": roomId, "msg": messages[0].text } });
+        authContext.onSendRocketChat(ep.ws_rocket_send_message(roomId, message, messageId));
+        
+        //#region REST API send Chat Message
+        // console.log(JSON.stringify(messages, null, 2));
+        // console.log(JSON.stringify(messages[0].text, null, 2));
+        //     var data = JSON.stringify({ "message": { "rid": roomId, "msg": messages[0].text } });
 
-            var config = {
-                method: 'post',
-                url: ep.post_message(),
-                headers: {
-                    'X-Auth-Token': authToken,
-                    'X-User-Id': userId,
-                    'Content-Type': 'application/json'
-                },
-                data: data
-            };
+        //     var config = {
+        //         method: 'post',
+        //         url: ep.post_message(),
+        //         headers: {
+        //             'X-Auth-Token': authToken,
+        //             'X-User-Id': userId,
+        //             'Content-Type': 'application/json'
+        //         },
+        //         data: data
+        //     };
 
-            axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data, null ,2));
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-
-
+        //     axios(config)
+        //         .then(function (response) {
+        //             console.log(JSON.stringify(response.data, null ,2));
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+            //#endregion
     }, [])
 
+    //#region Normal REST API
     get_history_message = () => {
 
         var data = '';
@@ -122,11 +134,7 @@ const useChatScreen = ({ route }) => {
                 console.log(error);
             });
     }
-
-    // useEffect(() => {
-    //     console.log(`abc ${messages}`);
-    // }, [messages]);
-
+    //#endregion
 
     return [messages, setMessages, onSend, roomId, get_history_message, userId];
 }

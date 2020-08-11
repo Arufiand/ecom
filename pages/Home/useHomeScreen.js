@@ -97,9 +97,7 @@ const useHomeScreen=()=>{
                 // console.log(`${EndPoint().get_login()}`);
             });
 
-        }
-    
-
+    }
 
     fetch_register = (username, pass, email, name) =>{
         let axiosConfig = {
@@ -174,16 +172,6 @@ const useHomeScreen=()=>{
         
     };
     axios(config)
-        .then(function (response) {
-            // console.log(JSON.stringify(response.data, null, 2));
-            // try {
-            //     authContext.onSendRocketChat(ep.ws_rocket_stream_notify_room(roomId)).then(function (responses) {
-            //         console.log(`response dari stream notify room ${roomId} adalah ${JSON.stringify(responses)}`);
-            //     });
-            // } catch (error) {
-            //     console.log(error);
-            // }
-        })
         .catch(function (error) {
             console.log(error);
         });
