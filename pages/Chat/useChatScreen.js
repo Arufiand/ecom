@@ -13,47 +13,67 @@ const useChatScreen = ({ route }) => {
     const authToken = route.params.rcAuthToken;
     const userId = route.params.rcUserId;
 
-    const { authContext, response } = useStore();
+    const { authContext, response, chat, card } = useStore();
 
     // console.log(`room id : ${roomId}, authToken = ${authToken}, user Id = ${userId}`);
     const [messages, setMessages] = useState([]);
 
 
     useEffect(() => {
-        get_history_message();
+        //get_history_message();
+        ws_rc_load_message(roomId);
     }, [])
 
-    //#region websocket
-    const ws_rc_streamNotifyRoom = useCallback((roomId) => {
-        authContext.onSendRocketChat(ep.ws_rocket_stream_notify_room(roomId))
-        console.log(`stream notify room berhasil`);
-
-          // useEffect(() => {
-    //     console.log(`abc ${messages}`);
-    // }, [messages]);
-    }, [])
-
-    const ws_rc_streamRoomMessage = useCallback((roomId) => {
-        authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(roomId))
-        console.log(`stream Room Message Berhasil`);
-    }, [])
-
-    const ws_rc_load_message = useCallback((roomId) => {
-        authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId)).then(function (response) {
-            for (let msg of response.data.messages) {
-                const chat = {
-                    _id: msg._id,
-                    text: msg.msg,
-                    createdAt: msg.ts.$date,
+    useEffect(() => {
+        console.log(`messages isinya : ${JSON.stringify(chat,null,2)}`)
+        if (chat.msg == "changed"){
+            try {
+                console.log(`isi chat yang changed = ${JSON.stringify(chat.fields.args[0], null, 2)}`);
+                const newMsg = {
+                    _id: chat.fields.args[0]._id,
+                    text: chat.fields.args[0].msg,
+                    createdAt: chat.fields.args[0].ts.$date,
                     user: {
-                        _id: msg.u._id,
-                        name: msg.u.name,
+                        _id: chat.fields.args[0].u._id,
+                        name: chat.fields.args[0].u.name,
                         avatar: 'https://placeimg.com/140/140/any',
                     }
                 }
-                setMessages(prevArray => [...prevArray, chat])
+                setMessages(prevArray => [newMsg, ...prevArray ])
+            } catch (error) {
+                console.log(error);
             }
-        })
+        }
+        else {
+            try {
+                for (let msg of chat.result.messages) {
+                    const chat = {
+                        _id: msg._id,
+                        text: msg.msg,
+                        createdAt: msg.ts.$date,
+                        user: {
+                            _id: msg.u._id,
+                            name: msg.u.name,
+                            avatar: 'https://placeimg.com/140/140/any',
+                        }
+                    }
+                    setMessages(prevArray => [...prevArray, chat])
+                }
+                // end looping chat
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, [chat])
+
+
+
+    //#region websocket
+
+    const ws_rc_load_message = useCallback(() => {
+        authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId))
+            console.log(`response ${JSON.stringify(chat, null, 2)}`);
+             
     }, [])
 
 
@@ -97,46 +117,46 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     //#region Normal REST API
-    get_history_message = () => {
+    // get_history_message = () => {
 
-        var data = '';
+    //     var data = '';
 
-        var config = {
-            method: 'get',
-            url: ep.get_historyChat(roomId),
-            headers: {
-                'X-Auth-Token': authToken,
-                'X-User-Id': userId
-            },
-            data: data
-        };
+    //     var config = {
+    //         method: 'get',
+    //         url: ep.get_historyChat(roomId),
+    //         headers: {
+    //             'X-Auth-Token': authToken,
+    //             'X-User-Id': userId
+    //         },
+    //         data: data
+    //     };
 
-        axios(config)
-            .then(function (response) {
+    //     axios(config)
+    //         .then(function (response) {
 
-                // looping untuk chat array
-                for (let msg of response.data.messages){
-                    const chat = {
-                        _id: msg._id,
-                        text: msg.msg,
-                        createdAt: msg.ts,
-                        user: {
-                            _id: msg.u._id,
-                            name: msg.u.name,
-                            avatar: 'https://placeimg.com/140/140/any',
-                        }
-                    }
-                    setMessages(prevArray => [...prevArray, chat])
-                }
-                // end looping chat
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    //             // looping untuk chat array
+    //             for (let msg of response.data.messages){
+    //                 const chat = {
+    //                     _id: msg._id,
+    //                     text: msg.msg,
+    //                     createdAt: msg.ts,
+    //                     user: {
+    //                         _id: msg.u._id,
+    //                         name: msg.u.name,
+    //                         avatar: 'https://placeimg.com/140/140/any',
+    //                     }
+    //                 }
+    //                 setMessages(prevArray => [...prevArray, chat])
+    //             }
+    //             // end looping chat
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // }
     //#endregion
 
-    return [messages, setMessages, onSend, roomId, get_history_message, userId];
+    return [messages, setMessages, onSend, roomId, userId];
 }
 
 //ujiCoba

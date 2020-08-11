@@ -14,7 +14,7 @@ const HomeScreen = ({ route, navigation }) => {
     const oneSignalPushToken = label.onesignal_push_token;
 
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId] = useHomeScreen();
+        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId, subtitle] = useHomeScreen();
 
     const renderItem = ({ item, index }) => {
         let roomId = item._id;

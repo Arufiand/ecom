@@ -6,7 +6,7 @@ import useChatScreen from './useChatScreen';
 
 const ChatScreen = ({route, navigation}) => {
     // const roomId = route.params;
-    const [messages, setMessages, onSend, roomId, get_history_message, userId] = useChatScreen({route});
+    const [messages, setMessages, onSend, roomId, userId] = useChatScreen({route});
 
             return (
                 <GiftedChat 

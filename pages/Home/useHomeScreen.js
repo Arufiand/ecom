@@ -18,12 +18,13 @@ const useHomeScreen=()=>{
     const [rcUserId, setRcUserId] = useState('');
     const [channel, setChannel] = useState('');
     const [groups, setGroups] = useState([]);
+    const [subtitle, setSubtitle] = useState('');
     const ep = new EndPoint();
     const navigation = useNavigation(); 
     
     const { authContext, response } = useStore();
     
-
+    
 
     fetch_login= async (username, pass, OneSignalPushToken) =>{
         let axiosConfig = {
@@ -138,14 +139,14 @@ const useHomeScreen=()=>{
             .then(function (response) {
                 console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
+                const start = Date.now();
                 try {
-                    console.log(`dia masuk sini`);
                     for (let msg of response.data.groups) {
                         const chat = {
                             _id: msg._id,
                             name: msg.name
                         }
-                        let randomId = chat._id+chat._id;
+                        let randomId = chat._id+start;
                         authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chat._id));
                     }                    
                 } catch (err) {
@@ -155,7 +156,6 @@ const useHomeScreen=()=>{
             .catch(function (error) {
                 console.log(error);
             });
-            console.log(`ini channel ${groups}`);
     }
 
     fetch_groupHistory= async (roomId)=>{
@@ -178,6 +178,6 @@ const useHomeScreen=()=>{
     }
 
     return [username,setUsername, pass,setPass, name,setName, email, 
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken,rcUserId];
+        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken,rcUserId, subtitle];
 }
 export default useHomeScreen;

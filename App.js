@@ -15,6 +15,8 @@ const App=({navigation})=>{
   const ep = new endpoint();
   const ws = new WebSocket(ep.ws_connection())
   const [response, setResponse] = useState('')
+  const [chat, setChat] = useState('')
+  const [card, setCard] = useState([''])
   useEffect(() => {
 
     const ws_open = () => {
@@ -43,10 +45,14 @@ const App=({navigation})=>{
         console.log(`ini isi message ${JSON.stringify(message,null, 2)}`);
         if (message.msg == "ping") {
           ws.send(ep.ws_rocket_ping())
-          setResponse(message)
         }
-
-        setResponse()
+        if (message.msg =="changed" && message.collection =="stream-room-messages"){
+            setChat(message);
+        }
+        if (message.msg == "result") {
+            setChat(message);
+        }
+        // setResponse()
         // if (message.msg == "connected") {
         //   ws.send(ep.ws_rocket_login_token())
         // }
@@ -127,7 +133,7 @@ const App=({navigation})=>{
     // }, [pushToken]);
 
   return(
-    <AppContext.Provider value={{ authContext, response }}>
+    <AppContext.Provider value={{ authContext, response, card, chat}}>
       <NavigationContainer>
         <Router />
       </NavigationContainer>
