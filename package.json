@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "cleanStart": "cd ./android && gradlew clean && cd .. && react-native start"
   },
   "dependencies": {
     "@gorhom/animated-tabbar": "^2.0.0",
