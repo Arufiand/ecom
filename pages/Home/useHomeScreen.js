@@ -19,10 +19,14 @@ const useHomeScreen=()=>{
     const [channel, setChannel] = useState('');
     const [groups, setGroups] = useState([]);
     const [subtitle, setSubtitle] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
     const ep = new EndPoint();
     const navigation = useNavigation(); 
     
+    
     const { authContext, response } = useStore();
+
+    
     
     
 
@@ -140,18 +144,24 @@ const useHomeScreen=()=>{
                 console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
                 const start = Date.now();
-                try {
-                    for (let msg of response.data.groups) {
-                        const chat = {
-                            _id: msg._id,
-                            name: msg.name
-                        }
-                        let randomId = chat._id+start;
-                        authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chat._id));
-                    }                    
-                } catch (err) {
-                    console.log(err);
-                }
+                if(subscribed == false) {
+                    try {
+                        for (let msg of response.data.groups) {
+                            const chat = {
+                                _id: msg._id,
+                                name: msg.name
+                            }
+                            let randomId = chat._id+start;
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chat._id));
+                        }                    
+                    } catch (err) {
+                        console.log(err);
+                    }
+                    setSubscribed(true);
+                 }
+                 else if (subscribed == true) {
+                     console.log(`history has been subscribed!`);
+                 }
             })
             .catch(function (error) {
                 console.log(error);

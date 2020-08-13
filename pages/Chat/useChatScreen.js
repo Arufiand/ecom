@@ -17,7 +17,7 @@ const useChatScreen = ({ route }) => {
 
     // console.log(`room id : ${roomId}, authToken = ${authToken}, user Id = ${userId}`);
     const [messages, setMessages] = useState([]);
-
+    const [loadHistory, setLoadHistory] = useState(false);
 
     useEffect(() => {
         //get_history_message();
@@ -25,26 +25,26 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     useEffect(() => {
-        console.log(`messages isinya : ${JSON.stringify(chat,null,2)}`)
-        if (chat.msg == "changed"){
-            try {
-                console.log(`isi chat yang changed = ${JSON.stringify(chat.fields.args[0], null, 2)}`);
-                const newMsg = {
-                    _id: chat.fields.args[0]._id,
-                    text: chat.fields.args[0].msg,
-                    createdAt: chat.fields.args[0].ts.$date,
-                    user: {
-                        _id: chat.fields.args[0].u._id,
-                        name: chat.fields.args[0].u.name,
-                        avatar: 'https://placeimg.com/140/140/any',
+        if (chat.msg == "changed" && loadHistory == true){
+            if (chat.fields.args[0].u._id != userId) {
+                try {
+                    const newMsg = {
+                        _id: chat.fields.args[0]._id,
+                        text: chat.fields.args[0].msg,
+                        createdAt: chat.fields.args[0].ts.$date,
+                        user: {
+                            _id: chat.fields.args[0].u._id,
+                            name: chat.fields.args[0].u.name,
+                            avatar: 'https://placeimg.com/140/140/any',
+                        }
                     }
+                    setMessages(prevArray => [newMsg, ...prevArray ])
+                } catch (error) {
+                    console.log(error);
                 }
-                setMessages(prevArray => [newMsg, ...prevArray ])
-            } catch (error) {
-                console.log(error);
             }
         }
-        else {
+        else if (loadHistory == false) {
             try {
                 for (let msg of chat.result.messages) {
                     const chat = {
@@ -57,7 +57,8 @@ const useChatScreen = ({ route }) => {
                             avatar: 'https://placeimg.com/140/140/any',
                         }
                     }
-                    setMessages(prevArray => [...prevArray, chat])
+                    setMessages(prevArray => [...prevArray, chat]);
+                    setLoadHistory(true);
                 }
                 // end looping chat
             } catch (error) {
