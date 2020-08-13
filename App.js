@@ -19,7 +19,7 @@ const App=({navigation})=>{
   const [card, setCard] = useState([''])
   useEffect(() => {
 
-    const ws_open = () => {
+  const ws_open = () => {
       ws.onopen = () => {
         ws.send(ep.ws_rocket_chat_conn());
         console.log(`socket connected!`);
@@ -52,14 +52,6 @@ const App=({navigation})=>{
         if (message.msg == "result") {
             setChat(message);
         }
-        // setResponse()
-        // if (message.msg == "connected") {
-        //   ws.send(ep.ws_rocket_login_token())
-        // }
-        // if (message.msg == "updated") {
-
-        // }
-
       }
     }
     

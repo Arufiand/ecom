@@ -25,9 +25,11 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     useEffect(() => {
+        console.log(`messages isinya : ${JSON.stringify(chat,null,2)}`)
         if (chat.msg == "changed" && loadHistory == true){
-            if (chat.fields.args[0].u._id != userId) {
+            if (chat.fields.args[0].u._id != userId && chat.fields.eventName == roomId) {
                 try {
+                    console.log(`id chatter = ${JSON.stringify(chat.fields.args[0].u._id, null, 2)} + room yang di chat = ${JSON.stringify(chat.fields.eventName, null, 2)}`);
                     const newMsg = {
                         _id: chat.fields.args[0]._id,
                         text: chat.fields.args[0].msg,
