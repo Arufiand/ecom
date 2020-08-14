@@ -11,7 +11,7 @@ import AppContext from './config/appContext';
 
 const Stack = createStackNavigator();
 
-const App=({navigation})=>{
+const App = ({ navigation }) => {
   const ep = new endpoint();
   const ws = new WebSocket(ep.ws_connection())
   const [response, setResponse] = useState('')
@@ -19,7 +19,7 @@ const App=({navigation})=>{
   const [card, setCard] = useState([''])
   useEffect(() => {
 
-  const ws_open = () => {
+    const ws_open = () => {
       ws.onopen = () => {
         ws.send(ep.ws_rocket_chat_conn());
         console.log(`socket connected!`);
@@ -42,19 +42,19 @@ const App=({navigation})=>{
         // on receiving a message, add it to the list of messages
         const message = JSON.parse(evt.data)
         setResponse(message)
-        console.log(`ini isi message ${JSON.stringify(message,null, 2)}`);
+        console.log(`ini isi message ${JSON.stringify(message, null, 2)}`);
         if (message.msg == "ping") {
           ws.send(ep.ws_rocket_ping())
         }
-        if (message.msg =="changed" && message.collection =="stream-room-messages"){
-            setChat(message);
+        if (message.msg == "changed" && message.collection == "stream-room-messages") {
+          setChat(message);
         }
         if (message.msg == "result") {
-            setChat(message);
+          setChat(message);
         }
       }
     }
-    
+
     ws_open()
     try {
       ws_onMessage()
@@ -118,14 +118,14 @@ const App=({navigation})=>{
         ws.send(data);
         console.log("On send rocket chat function");
       }
-  }), []);
+    }), []);
 
-    // useEffect(() => {
-    //     console.log(`Data push Token ${pushToken}`);
-    // }, [pushToken]);
+  // useEffect(() => {
+  //     console.log(`Data push Token ${pushToken}`);
+  // }, [pushToken]);
 
-  return(
-    <AppContext.Provider value={{ authContext, response, card, chat}}>
+  return (
+    <AppContext.Provider value={{ authContext, response, card, chat }}>
       <NavigationContainer>
         <Router />
       </NavigationContainer>

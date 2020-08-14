@@ -15,7 +15,7 @@ const useTutorial = ({ route }) => {
     const ws_rc_login_token = useCallback(() => {
         authContext.onSendRocketChat(ep.ws_rocket_login_token());
         console.log(`berhasil login ndul`);
-    },[])
+    }, [])
 
     return [a, ws_rc_login_token];
 }

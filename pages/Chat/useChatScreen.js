@@ -25,8 +25,8 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     useEffect(() => {
-        console.log(`messages isinya : ${JSON.stringify(chat,null,2)}`)
-        if (chat.msg == "changed" && loadHistory == true){
+        console.log(`messages isinya : ${JSON.stringify(chat, null, 2)}`)
+        if (chat.msg == "changed" && loadHistory == true) {
             if (chat.fields.args[0].u._id != userId && chat.fields.eventName == roomId) {
                 try {
                     console.log(`id chatter = ${JSON.stringify(chat.fields.args[0].u._id, null, 2)} + room yang di chat = ${JSON.stringify(chat.fields.eventName, null, 2)}`);
@@ -40,7 +40,7 @@ const useChatScreen = ({ route }) => {
                             avatar: 'https://placeimg.com/140/140/any',
                         }
                     }
-                    setMessages(prevArray => [newMsg, ...prevArray ])
+                    setMessages(prevArray => [newMsg, ...prevArray])
                 } catch (error) {
                     console.log(error);
                 }
@@ -75,14 +75,14 @@ const useChatScreen = ({ route }) => {
 
     const ws_rc_load_message = useCallback(() => {
         authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId))
-            console.log(`response ${JSON.stringify(chat, null, 2)}`);
-             
+        console.log(`response ${JSON.stringify(chat, null, 2)}`);
+
     }, [])
 
 
     //#endregion
-    
-    const onSend = useCallback( (messages = []) => {
+
+    const onSend = useCallback((messages = []) => {
         let message = messages[0].text;
         setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
         let start = Date.now();
@@ -92,7 +92,7 @@ const useChatScreen = ({ route }) => {
         console.log(`Isi Message : ${message}`);
 
         authContext.onSendRocketChat(ep.ws_rocket_send_message(roomId, message, messageId));
-        
+
         //#region REST API send Chat Message
         // console.log(JSON.stringify(messages, null, 2));
         // console.log(JSON.stringify(messages[0].text, null, 2));
@@ -116,7 +116,7 @@ const useChatScreen = ({ route }) => {
         //         .catch(function (error) {
         //             console.log(error);
         //         });
-            //#endregion
+        //#endregion
     }, [])
 
     //#region Normal REST API

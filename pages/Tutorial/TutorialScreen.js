@@ -8,12 +8,12 @@ const TutorialScreen = ({ route, navigation }) => {
     const [a, ws_rc_login_token] = useTutorial({ route });
 
     useEffect(() => {
-        
+
     }, []);
 
     return (
         <View>
-            <TouchableOpacity onPress={ws_rc_login_token} style = {styles.button}>
+            <TouchableOpacity onPress={ws_rc_login_token} style={styles.button}>
                 <Text>Login</Text>
             </TouchableOpacity>
         </View>

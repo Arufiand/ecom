@@ -4,21 +4,21 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import useChatScreen from './useChatScreen';
 
 
-const ChatScreen = ({route, navigation}) => {
+const ChatScreen = ({ route, navigation }) => {
     // const roomId = route.params;
-    const [messages, setMessages, onSend, roomId, userId] = useChatScreen({route});
+    const [messages, setMessages, onSend, roomId, userId] = useChatScreen({ route });
 
-            return (
-                <GiftedChat 
-                    messages={messages}
-                    onSend={messages => onSend(messages)}
-                    user={{
-                        _id: userId,
-                    }}
-                    loadEarlier={true}
-                />
-            )
-    
+    return (
+        <GiftedChat
+            messages={messages}
+            onSend={messages => onSend(messages)}
+            user={{
+                _id: userId,
+            }}
+            loadEarlier={true}
+        />
+    )
+
 }
 
 const styles = StyleSheet.create({

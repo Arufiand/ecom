@@ -19,18 +19,18 @@ const HomeScreen = ({ route, navigation }) => {
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
         return (
-            
-            <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', {roomId, rcAuthToken,rcUserId}); }}>  
-            {/* <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Tutorial', {roomId, rcAuthToken,rcUserId}); }}>   */}
+
+            <TouchableOpacity activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                {/* <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Tutorial', {roomId, rcAuthToken,rcUserId}); }}>   */}
                 <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
-                    {item.count != 0 ? 
-                    <ListItem
-                        title={item.name}
-                        subtitle={item.lastMessage.msg ? item.lastMessage.msg : "Belum Ada Pesan" } 
-                    /> : 
-                    <ListItem
-                                title={"Tidak Ada Data"}
-                                subtitle={"Tidak Ada Data"}
+                    {item.count != 0 ?
+                        <ListItem
+                            title={item.name}
+                            subtitle={item.lastMessage.msg ? item.lastMessage.msg : "Belum Ada Pesan"}
+                        /> :
+                        <ListItem
+                            title={"Tidak Ada Data"}
+                            subtitle={"Tidak Ada Data"}
                         />
                     }
                 </View>
@@ -40,17 +40,17 @@ const HomeScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style = {styles.circle}></View>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Username"
-                    placeholderTextColor={Colors.placeHolders}
-                    // onSubmitEditing= {()=>this.password.focus()}
-                    onChangeText={text => {
-                        setEmail(text);
-                    }}
-                    value={email}
-                />
+            <View style={styles.circle}></View>
+            <TextInput
+                style={styles.input}
+                placeholder="Username"
+                placeholderTextColor={Colors.placeHolders}
+                // onSubmitEditing= {()=>this.password.focus()}
+                onChangeText={text => {
+                    setEmail(text);
+                }}
+                value={email}
+            />
             <TextInput
                 style={styles.input}
                 placeholder="Password"
@@ -62,7 +62,7 @@ const HomeScreen = ({ route, navigation }) => {
                 }}
                 value={pass}
             />
-            <View style={{flexDirection:'row'}}>
+            <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => fetch_login(email, pass, oneSignalPushToken)}>
@@ -78,16 +78,16 @@ const HomeScreen = ({ route, navigation }) => {
                     onPress={() => fetch_groupList()}>
                     <Text>Group List</Text>
                 </TouchableOpacity>
-                </View>
-                <View style= {{flexDirection: 'row'}}>
-                 <FlatList
-                    keyExtractor={(item, index) => item._id }
-                    data={ groups }
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <FlatList
+                    keyExtractor={(item, index) => item._id}
+                    data={groups}
                     renderItem={renderItem}
-                   />
-                </View>
+                />
+            </View>
         </View>
-        
+
     )
 }
 
@@ -122,19 +122,19 @@ const styles = StyleSheet.create({
         margin: 10,
         marginTop: 20,
         borderRadius: 20,
-        justifyContent : 'center'
+        justifyContent: 'center'
     },
     container: {
         flex: 1,
-        width : '100%',
+        width: '100%',
         height: '30%',
-        justifyContent : 'center',
-        alignItems : 'center'
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     circle: {
         width: 500,
         height: 500,
-        borderRadius : 500/2,
+        borderRadius: 500 / 2,
         backgroundColor: Colors.circle,
         position: 'absolute',
         left: -150,
@@ -143,13 +143,13 @@ const styles = StyleSheet.create({
     },
     input: {
         width: 300,
-        borderRadius: 300/2,
+        borderRadius: 300 / 2,
         backgroundColor: Colors.input,
         padding: 15,
         margin: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        textAlign : 'center'
+        textAlign: 'center'
 
 
     },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.container,
         alignItems: 'center',
-        justifyContent: 'center',  
+        justifyContent: 'center',
     },
     item: {
         padding: 10,
