@@ -3,16 +3,16 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 //This is an example code for Bottom Navigation//
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '../../App';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
-    const [username, setUsername] = useState('Dwayne');
+    const [username, setUsername] = useState('Danny2');
     const [pass, setPass] = useState('med1xsoft');
-    const [email, setEmail] = useState('Danny');
-    const [name, setName] = useState('Dwayne Rock Johnson');
+    const [email, setEmail] = useState('Arufiand2@gmail.com');
+    const [name, setName] = useState('Arufiand');
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
@@ -20,15 +20,20 @@ const useHomeScreen = () => {
     const [groups, setGroups] = useState([]);
     const [subtitle, setSubtitle] = useState('');
     const [subscribed, setSubscribed] = useState(false);
+    const [rooms, setRooms] =useState([]);
     const ep = new EndPoint();
+
     const navigation = useNavigation();
 
 
-    const { authContext, response } = useStore();
+    const { authContext, response, chat } = useStore();
 
-
-
-
+    useEffect(() => {
+        if (chat.msg == "changed" && chat.fields.eventName == groups._id){
+            setSubtitle(chat.fields.args[0].msg);
+            console.log(`ini ada perubahan chat masuk!`);
+        }
+    }, [chat])
 
     fetch_login = async (username, pass, OneSignalPushToken) => {
         let axiosConfig = {
@@ -105,26 +110,49 @@ const useHomeScreen = () => {
     }
 
     fetch_register = (username, pass, email, name) => {
-        let axiosConfig = {
+
+        var data = JSON.stringify({ "username": "Danny2", "email": "Arufiand2@gmail.com", "pass": "med1xsoft", "name": "Arufiand" });
+
+        var config = {
+            method: 'post',
+            url: 'http://172.16.200.56:3000/api/v1/users.register',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            data: data
         };
-        axios.post(ep.post_register(), {
-            username: username,
-            pass: pass,
-            name: name,
-            email: email
-        }, axiosConfig).then(async res => {
-            console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
-            if (res.data.status == "success") {
-                // props.navigation.navigate('Chat')
-            }
-        })
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
             .catch(function (error) {
-                console.log(error);
-                // console.log(`${EndPoint().get_login()}`);
+                console.log(JSON.stringify(error.message, null, 2));
+                if (error) {
+                    console.log(`Data Sebelumnya sudah ada, melakukan Auto Login!`);
+                    fetch_login(username, pass);
+                }
             });
+        // let axiosConfig = {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // };
+        // axios.post(ep.post_register(), {
+        //     username: "Danny2",
+        //     pass: "med1xsoft",
+        //     name: "Arufiand",
+        //     email: "Arufiand2@gmail.com"
+        // }, axiosConfig).then(async res => {
+        //     console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
+        //     if (res.data.status == "success") {
+        //         // props.navigation.navigate('Chat')
+        //     }
+        // })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //         // console.log(`${EndPoint().get_login()}`);
+        //     });
     }
 
     fetch_groupList = () => {

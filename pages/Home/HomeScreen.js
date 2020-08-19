@@ -26,7 +26,8 @@ const HomeScreen = ({ route, navigation }) => {
                     {item.count != 0 ?
                         <ListItem
                             title={item.name}
-                            subtitle={item.lastMessage.msg ? item.lastMessage.msg : "Belum Ada Pesan"}
+                            // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                            subtitle={item.lastMessage.msg ?  item.lastMessage.msg : subtitle}
                         /> :
                         <ListItem
                             title={"Tidak Ada Data"}
