@@ -9,9 +9,14 @@ import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
-    const [username, setUsername] = useState('Danny2');
+    // const [username, setUsername] = useState('Riezka');
+    // const [pass, setPass] = useState('iniPassCoba');
+    // const [email, setEmail] = useState('Riezka@gmail.com');
+    // const [name, setName] = useState('Riezka Pertiwi');
+
+    const [username, setUsername] = useState('Danny3');
     const [pass, setPass] = useState('med1xsoft');
-    const [email, setEmail] = useState('Arufiand2@gmail.com');
+    const [email, setEmail] = useState('Arufiand3@gmail.com');
     const [name, setName] = useState('Arufiand');
 
     const [rcAuthToken, setRcAuthToken] = useState('');
@@ -111,11 +116,11 @@ const useHomeScreen = () => {
 
     fetch_register = (username, pass, email, name) => {
 
-        var data = JSON.stringify({ "username": "Danny2", "email": "Arufiand2@gmail.com", "pass": "med1xsoft", "name": "Arufiand" });
+        var data = JSON.stringify({ "username": username, "email": email, "pass": pass, "name": name });
 
         var config = {
             method: 'post',
-            url: 'http://172.16.200.56:3000/api/v1/users.register',
+            url: ep.post_register(),
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -127,10 +132,10 @@ const useHomeScreen = () => {
                 console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
-                console.log(JSON.stringify(error.message, null, 2));
-                if (error) {
-                    console.log(`Data Sebelumnya sudah ada, melakukan Auto Login!`);
-                    fetch_login(username, pass);
+                console.log(JSON.stringify(error.name, null, 2));
+                if (error.name == "Error") {
+                    console.log(`Data Sudah Ada, Silahkan Login!`);
+                    setTimeout(function() {fetch_login(username, pass)}, 1500);
                 }
             });
         // let axiosConfig = {
