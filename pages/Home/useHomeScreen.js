@@ -9,15 +9,15 @@ import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
-    const [username, setUsername] = useState('Riezka');
-    const [pass, setPass] = useState('iniPassCoba');
-    const [email, setEmail] = useState('Riezka@gmail.com');
-    const [name, setName] = useState('Riezka Pertiwi');
+    // const [username, setUsername] = useState('Riezka');
+    // const [pass, setPass] = useState('iniPassCoba');
+    // const [email, setEmail] = useState('Riezka@gmail.com');
+    // const [name, setName] = useState('Riezka Pertiwi');
 
-    // const [username, setUsername] = useState('admin');
-    // const [pass, setPass] = useState('adminadmin');
-    // const [email, setEmail] = useState('admin');
-    // const [name, setName] = useState('Arufiand7');
+    const [username, setUsername] = useState('');
+    const [pass, setPass] = useState('');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
@@ -66,7 +66,7 @@ const useHomeScreen = () => {
                 });
     }
 
-    fetch_login = async (username, pass) => {
+    fetch_login = async (username, pass, email, name) => {
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json'

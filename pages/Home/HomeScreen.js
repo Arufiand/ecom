@@ -48,9 +48,9 @@ const HomeScreen = ({ route, navigation }) => {
                 placeholderTextColor={Colors.placeHolders}
                 // onSubmitEditing= {()=>this.password.focus()}
                 onChangeText={text => {
-                    setEmail(text);
+                    setUsername(text);
                 }}
-                value={email}
+                value={username}
             />
             <TextInput
                 style={styles.input}
