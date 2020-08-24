@@ -14,7 +14,7 @@ const HomeScreen = ({ route, navigation }) => {
     const oneSignalPushToken = label.onesignal_push_token;
 
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId, subtitle] = useHomeScreen();
+        setEmail, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, groups, rcAuthToken, rcUserId, subtitle] = useHomeScreen();
 
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
@@ -66,7 +66,7 @@ const HomeScreen = ({ route, navigation }) => {
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => fetch_login(email, pass, oneSignalPushToken)}>
+                    onPress={() => fetch_auto_login_register(username, pass, email, name)}>
                     <Text>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity

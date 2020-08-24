@@ -9,15 +9,15 @@ import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
-    // const [username, setUsername] = useState('Riezka');
-    // const [pass, setPass] = useState('iniPassCoba');
-    // const [email, setEmail] = useState('Riezka@gmail.com');
-    // const [name, setName] = useState('Riezka Pertiwi');
+    const [username, setUsername] = useState('Riezka');
+    const [pass, setPass] = useState('iniPassCoba');
+    const [email, setEmail] = useState('Riezka@gmail.com');
+    const [name, setName] = useState('Riezka Pertiwi');
 
-    const [username, setUsername] = useState('Danny3');
-    const [pass, setPass] = useState('med1xsoft');
-    const [email, setEmail] = useState('Arufiand3@gmail.com');
-    const [name, setName] = useState('Arufiand');
+    // const [username, setUsername] = useState('admin');
+    // const [pass, setPass] = useState('adminadmin');
+    // const [email, setEmail] = useState('admin');
+    // const [name, setName] = useState('Arufiand7');
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
@@ -40,7 +40,33 @@ const useHomeScreen = () => {
         }
     }, [chat])
 
-    fetch_login = async (username, pass, OneSignalPushToken) => {
+    fetch_auto_login_register = (username, pass, email, name) => {
+        var dataLogin = JSON.stringify({ "user": username, "password": pass });
+
+        var configLogin = {
+            method: 'post',
+            url: ep.post_login(),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: dataLogin
+        };
+            axios(configLogin)
+                .then(async response => {
+                    fetch_login(username, pass);
+                })
+                .catch(function (error) {
+                    console.log(JSON.stringify(error, null, 2));
+                    console.log(`Data Username dan Email belum ada! lakukan registrasi`);
+                    try {
+                        fetch_register(username, pass, email, name);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                });
+    }
+
+    fetch_login = async (username, pass) => {
         let axiosConfig = {
             headers: {
                 'Content-Type': 'application/json'
@@ -53,14 +79,20 @@ const useHomeScreen = () => {
             console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
             if (res.data.status == "success") {
                 try {
-                    authContext.onSendRocketChat(ep.ws_rocket_login_token(res.data.data.authToken));
-                    console.log(`token berhasil`);
+                    setTimeout(function () {
+                        authContext.onSendRocketChat(ep.ws_rocket_login_token(res.data.data.authToken));
+                        console.log(`token berhasil`);
+                    }, 1500);
+                    
                     try {
+                        setTimeout(function () {
                         authContext.onSendRocketChat(ep.ws_rocket_stream_notify_user(res.data.data.userId, ["message", "notification", "subscriptions-changed"]));
                         console.log(`notify user berhasil`);
+                        }, 1500);
                     } catch (error) {
                         console.log(error);
                     }
+                
                 } catch (error) {
                     console.log(error);
                 }
@@ -79,37 +111,10 @@ const useHomeScreen = () => {
                 catch (err) {
                     console.log(err);
                 }
-                // let axiosConfig = {
-                //     headers: {
-                //         'X-Auth-Token': res.data.data.authToken,
-                //         'Content-Type': 'application/json',
-                //         'X-User-Id': res.data.data.userId,
-                //     }
-                // };
-                // axios.post(ep.post_pushToken(), {
-                //     type: "gcm",
-                //     value: OneSignalPushToken,
-                //     appName: "com.belajartab"
-
-                // }, axiosConfig).then(async res => {
-                //     console.log(" fetch_token : ", JSON.stringify(res.data, null, 2));
-                //     if (res.data.status == "success") {
-                //         console.log(` Token Sukses `);
-
-                //     }
-                // })
-                //     .catch(function (error) {
-                //         console.log(error);
-                //         // console.log(`${EndPoint().get_login()}`);
-                //     });
-
-
             }
-            //fetch_token(userId, authToken);
         })
             .catch(function (error) {
                 console.log(error);
-                // console.log(`${EndPoint().get_login()}`);
             });
 
     }
@@ -130,34 +135,15 @@ const useHomeScreen = () => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                setTimeout(function() {fetch_login(username, pass)}, 1500);
             })
             .catch(function (error) {
                 console.log(JSON.stringify(error.name, null, 2));
                 if (error.name == "Error") {
-                    console.log(`Data Sudah Ada, Silahkan Login!`);
+                    console.log(error);
                     setTimeout(function() {fetch_login(username, pass)}, 1500);
                 }
             });
-        // let axiosConfig = {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // };
-        // axios.post(ep.post_register(), {
-        //     username: "Danny2",
-        //     pass: "med1xsoft",
-        //     name: "Arufiand",
-        //     email: "Arufiand2@gmail.com"
-        // }, axiosConfig).then(async res => {
-        //     console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
-        //     if (res.data.status == "success") {
-        //         // props.navigation.navigate('Chat')
-        //     }
-        // })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //         // console.log(`${EndPoint().get_login()}`);
-        //     });
     }
 
     fetch_groupList = () => {
@@ -221,6 +207,6 @@ const useHomeScreen = () => {
     }
 
     return [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId, subtitle];
+        setEmail, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, groups, rcAuthToken, rcUserId, subtitle];
 }
 export default useHomeScreen;
