@@ -19,23 +19,21 @@ const HomeScreen = ({ route, navigation }) => {
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
         return (
-
-            <TouchableOpacity activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                {/* <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Tutorial', {roomId, rcAuthToken,rcUserId}); }}>   */}
-                <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
-                    {item.count != 0 ?
-                        <ListItem
-                            title={item.name}
-                            // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
-                            subtitle={item.lastMessage.msg ?  item.lastMessage.msg : subtitle}
-                        /> :
-                        <ListItem
-                            title={"Tidak Ada Data"}
-                            subtitle={"Tidak Ada Data"}
-                        />
-                    }
-                </View>
-            </TouchableOpacity>
+            <View style={{ width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle }}>
+                <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                        {item.count != 0 ?
+                            <ListItem
+                                title={item.name}
+                                // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                subtitle={item.lastMessage.msg ?  item.lastMessage.msg : subtitle}
+                            /> :
+                            <ListItem
+                                title={"Tidak Ada Data"}
+                                subtitle={"Tidak Ada Data"}
+                            />
+                        }
+                </TouchableOpacity>
+            </View>
         );
     }
 

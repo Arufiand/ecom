@@ -1,6 +1,8 @@
 const globalEP = {
+    //http: "http://172.23.22.104:3000",
     http : "http://172.16.200.56:3000",
     ws:    "ws://172.16.200.56:3000/websocket"
+    //ws:    "ws://172.23.22.104:3000/websocket"
 };
 
 export default class endpoint{
@@ -125,5 +127,10 @@ export default class endpoint{
     post_message=()=>{
         console.log(`url postMessage : ${globalEP.http}/api/v1/chat.sendMessage`);
         return `${globalEP.http}/api/v1/chat.sendMessage`;
+    }
+
+    get_mentioned_chat = (roomId) => {
+        console.log(`url getMentionedMessage : ${globalEP.http}/api/v1/chat.getMentionedMessages?roomId=${roomId}`);
+        return `${globalEP.http}/api/v1/chat.getMentionedMessages?roomId=${roomId}`
     }
 }

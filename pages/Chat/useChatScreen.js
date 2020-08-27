@@ -29,7 +29,7 @@ const useChatScreen = ({ route }) => {
         if (chat.msg == "changed" && loadHistory == true) {
             if (chat.fields.args[0].u._id != userId && chat.fields.eventName == roomId) {
                 try {
-                    console.log(`id chatter = ${JSON.stringify(chat.fields.args[0].u._id, null, 2)} + room yang di chat = ${JSON.stringify(chat.fields.eventName, null, 2)}`);
+                    //console.log(`id chatter = ${JSON.stringify(chat.fields.args[0].u._id, null, 2)} + room yang di chat = ${JSON.stringify(chat.fields.eventName, null, 2)}`);
                     const newMsg = {
                         _id: chat.fields.args[0]._id,
                         text: chat.fields.args[0].msg,
@@ -69,8 +69,6 @@ const useChatScreen = ({ route }) => {
         }
     }, [chat])
 
-
-
     //#region websocket
 
     const ws_rc_load_message = useCallback(() => {
@@ -92,31 +90,6 @@ const useChatScreen = ({ route }) => {
         console.log(`Isi Message : ${message}`);
 
         authContext.onSendRocketChat(ep.ws_rocket_send_message(roomId, message, messageId));
-
-        //#region REST API send Chat Message
-        // console.log(JSON.stringify(messages, null, 2));
-        // console.log(JSON.stringify(messages[0].text, null, 2));
-        //     var data = JSON.stringify({ "message": { "rid": roomId, "msg": messages[0].text } });
-
-        //     var config = {
-        //         method: 'post',
-        //         url: ep.post_message(),
-        //         headers: {
-        //             'X-Auth-Token': authToken,
-        //             'X-User-Id': userId,
-        //             'Content-Type': 'application/json'
-        //         },
-        //         data: data
-        //     };
-
-        //     axios(config)
-        //         .then(function (response) {
-        //             console.log(JSON.stringify(response.data, null ,2));
-        //         })
-        //         .catch(function (error) {
-        //             console.log(error);
-        //         });
-        //#endregion
     }, [])
 
     //#region Normal REST API

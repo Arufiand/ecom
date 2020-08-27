@@ -9,23 +9,21 @@ import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
-    // const [username, setUsername] = useState('Riezka');
-    // const [pass, setPass] = useState('iniPassCoba');
-    // const [email, setEmail] = useState('Riezka@gmail.com');
-    // const [name, setName] = useState('Riezka Pertiwi');
 
-    const [username, setUsername] = useState('');
-    const [pass, setPass] = useState('');
+    const [username, setUsername] = useState('Danny');
+    const [pass, setPass] = useState('med1xsoft');
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
-    const [channel, setChannel] = useState('');
     const [groups, setGroups] = useState([]);
     const [subtitle, setSubtitle] = useState('');
     const [subscribed, setSubscribed] = useState(false);
     const [rooms, setRooms] =useState([]);
+    const [channel, setChannel] = useState('');
+    const [selected, setSelected] = useState(new Map());
+
     const ep = new EndPoint();
 
     const navigation = useNavigation();
@@ -34,9 +32,11 @@ const useHomeScreen = () => {
     const { authContext, response, chat } = useStore();
 
     useEffect(() => {
-        if (chat.msg == "changed" && chat.fields.eventName == groups._id){
-            setSubtitle(chat.fields.args[0].msg);
-            console.log(`ini ada perubahan chat masuk!`);
+        if (chat.msg == "changed" && chat.collection == "stream-room-messages"){
+            // chat.fields.eventName == groups._id
+            //setSubtitle(chat.fields.args[0].msg);
+            console.log(`isi response adalah = ${JSON.stringify(response, null,2)} `);
+            console.log(`event in room = ${JSON.stringify(chat.fields.eventName,null,2)}`);    
         }
     }, [chat])
 
