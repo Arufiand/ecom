@@ -23,6 +23,7 @@ const useHomeScreen = () => {
     const [rooms, setRooms] =useState([]);
     const [channel, setChannel] = useState('');
     const [selected, setSelected] = useState(new Map());
+    const [incomingNotif, setIncomingNotif] = useState('');
 
     const ep = new EndPoint();
 
@@ -32,12 +33,7 @@ const useHomeScreen = () => {
     const { authContext, response, chat } = useStore();
 
     useEffect(() => {
-        if (chat.msg == "changed" && chat.collection == "stream-room-messages"){
-            // chat.fields.eventName == groups._id
-            //setSubtitle(chat.fields.args[0].msg);
-            console.log(`isi response adalah = ${JSON.stringify(response, null,2)} `);
-            console.log(`event in room = ${JSON.stringify(chat.fields.eventName,null,2)}`);    
-        }
+       fetch_groupList();
     }, [chat])
 
     fetch_auto_login_register = (username, pass, email, name) => {
@@ -82,22 +78,19 @@ const useHomeScreen = () => {
                     setTimeout(function () {
                         authContext.onSendRocketChat(ep.ws_rocket_login_token(res.data.data.authToken));
                         console.log(`token berhasil`);
-                    }, 1500);
+                    }, 150);
                     
                     try {
                         setTimeout(function () {
                         authContext.onSendRocketChat(ep.ws_rocket_stream_notify_user(res.data.data.userId, ["message", "notification", "subscriptions-changed"]));
                         console.log(`notify user berhasil`);
-                        }, 1500);
+                        }, 200);
                     } catch (error) {
                         console.log(error);
                     }
-                
                 } catch (error) {
                     console.log(error);
                 }
-
-
                 try {
                     setRcUserId(res.data.data.userId)
                     await AsyncStorage.setItem(label.rc_user_id, res.data.data.userId);
@@ -105,8 +98,6 @@ const useHomeScreen = () => {
                     await AsyncStorage.setItem(label.rc_user_auth_token, res.data.data.authToken);
                     await AsyncStorage.setItem(label.rc_user_name, res.data.data.me.name);
                     await AsyncStorage.setItem(label.rc_user_username, res.data.data.me.username);
-
-
                 }
                 catch (err) {
                     console.log(err);
@@ -146,6 +137,7 @@ const useHomeScreen = () => {
             });
     }
 
+    
     fetch_groupList = () => {
 
         let data = '';
@@ -166,12 +158,13 @@ const useHomeScreen = () => {
                 if (subscribed == false) {
                     try {
                         for (let msg of response.data.groups) {
-                            const chat = {
+                            const chats = {
                                 _id: msg._id,
                                 name: msg.name
                             }
-                            let randomId = chat._id + start;
-                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chat._id));
+                            let randomId = chats._id + start;
+                            console.log(`Random ID Grouplist : ${randomId}`);
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
                         }
                     } catch (err) {
                         console.log(err);
@@ -186,7 +179,7 @@ const useHomeScreen = () => {
                 console.log(error);
             });
     }
-
+    useEffect(() => {
     fetch_groupHistory = async (roomId) => {
         var data = '';
 
@@ -205,6 +198,7 @@ const useHomeScreen = () => {
                 console.log(error);
             });
     }
+    },[chat])
 
     return [username, setUsername, pass, setPass, name, setName, email,
         setEmail, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, groups, rcAuthToken, rcUserId, subtitle];
