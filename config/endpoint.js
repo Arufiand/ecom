@@ -1,8 +1,12 @@
 const globalEP = {
-    //http: "http://172.23.22.104:3000",
+    //RocketChat Schadenfreude
+    // http: "http://172.21.15.191:3000",
+    // ws:   "ws://172.21.15.191:3000/websocket"
+
+    //RocketChat Kantor
     http : "http://172.16.200.56:3000",
     ws:    "ws://172.16.200.56:3000/websocket"
-    //ws:    "ws://172.23.22.104:3000/websocket"
+    
 };
 
 export default class endpoint{
@@ -102,6 +106,10 @@ export default class endpoint{
     post_login () {
         return globalEP.http + "/api/v1/login";
     }
+
+    post_logout () {
+        return globalEP.http + "/api/v1/logout";
+    }
     
     post_pushToken() {
         return globalEP.http + "/api/v1/push.token"
@@ -133,4 +141,5 @@ export default class endpoint{
         console.log(`url getMentionedMessage : ${globalEP.http}/api/v1/chat.getMentionedMessages?roomId=${roomId}`);
         return `${globalEP.http}/api/v1/chat.getMentionedMessages?roomId=${roomId}`
     }
+
 }

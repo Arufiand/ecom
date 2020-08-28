@@ -10,10 +10,13 @@ import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('Danny');
+    const [username, setUsername] = useState('siswa1');
     const [pass, setPass] = useState('med1xsoft');
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
+    const [email, setEmail] = useState('siswa1@gmail.com');
+    const [name, setName] = useState('Siswa Alfian');
+    const [mainId, setMainId] = useState('147258');
+    const [role, setRole] = useState('siswa');
+    const [statusLogin, setStatusLogin] = useState(false);
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
@@ -50,6 +53,7 @@ const useHomeScreen = () => {
             axios(configLogin)
                 .then(async response => {
                     fetch_login(username, pass);
+                    setStatusLogin(true);
                 })
                 .catch(function (error) {
                     console.log(JSON.stringify(error, null, 2));
@@ -110,9 +114,9 @@ const useHomeScreen = () => {
 
     }
 
-    fetch_register = (username, pass, email, name) => {
+    fetch_register = (username, pass, email, name, mainId, role ) => {
 
-        var data = JSON.stringify({ "username": username, "email": email, "pass": pass, "name": name });
+        var data = JSON.stringify({ "username": username, "email": email, "pass": pass, "name": name, "main_id": mainId, "user_type" : role });
 
         var config = {
             method: 'post',
@@ -137,7 +141,27 @@ const useHomeScreen = () => {
             });
     }
 
-    
+    fetch_logout = () => {
+        let data = '';
+        var config = {
+            method: 'get',
+            url: ep.post_logout(),
+            headers: {
+                'X-Auth-Token': rcAuthToken,
+                'X-User-Id': rcUserId
+            },
+            data: data
+        };
+        axios(config)
+        .then(function (response) {
+            console.log(`Response Logout ${JSON.stringify(response.data, null, 2)}`);
+            setStatusLogin(false);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     fetch_groupList = () => {
 
         let data = '';
@@ -179,6 +203,7 @@ const useHomeScreen = () => {
                 console.log(error);
             });
     }
+    
     useEffect(() => {
     fetch_groupHistory = async (roomId) => {
         var data = '';
@@ -200,7 +225,7 @@ const useHomeScreen = () => {
     }
     },[chat])
 
-    return [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, groups, rcAuthToken, rcUserId, subtitle];
+    return [username, setUsername, pass, setPass, name, setName, email, 
+        setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, fetch_logout, groups, rcAuthToken, rcUserId, subtitle, statusLogin];
 }
 export default useHomeScreen;

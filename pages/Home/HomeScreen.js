@@ -1,7 +1,7 @@
 //This is an example code for Bottom Navigation//
-import React from 'react';
+import React,{ useState} from 'react';
 //import react in our code.
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import label from '../../config/local_label_storage';
@@ -12,30 +12,64 @@ import useHomeScreen from './useHomeScreen';
 const HomeScreen = ({ route, navigation }) => {
 
     const oneSignalPushToken = label.onesignal_push_token;
-
+    const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, groups, rcAuthToken, rcUserId, subtitle] = useHomeScreen();
+        setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, fetch_logout, groups, rcAuthToken, rcUserId, subtitle, statusLogin] = useHomeScreen();
 
     const renderItem = ({ item, index }) => {
         let roomId = item._id;
-        return (
-            <View style={{ width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle }}>
-                <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                        {item.count != 0 ?
-                            <ListItem
-                                title={item.name}
-                                // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
-                                subtitle={item.lastMessage.msg ?  item.lastMessage.msg : subtitle}
-                            /> :
-                            <ListItem
-                                title={"Tidak Ada Data"}
-                                subtitle={"Tidak Ada Data"}
-                            />
-                        }
-                </TouchableOpacity>
-            </View>
-        );
+        if (statusLogin == false) {
+            return (
+              <View>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                        }}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalText}>Hello World!</Text>
+
+                                <TouchableOpacity
+                                    style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                                    onPress={() => {
+                                        setModalVisible(!modalVisible);
+                                    }}
+                                >
+                                    <Text style={styles.textStyle}>Hide Modal</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+              </View>  
+            );
+        }
+        else if (statusLogin == true) {
+            return (
+                <View style={{ width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle }}>
+                    <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                            {item.total == 0 ?
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => fetch_groupList()}>
+                                    <Text>Group List</Text>
+                                </TouchableOpacity>
+                                :
+                                <ListItem
+                                    title={item.name}
+                                    // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                    subtitle={item.lastMessage.msg ? item.lastMessage.msg : subtitle}
+                                /> 
+                            }
+                    </TouchableOpacity>
+                </View>
+            );
+        }
     }
+    
 
     return (
         <View style={styles.container}>
@@ -69,13 +103,13 @@ const HomeScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => fetch_register(username, pass, email, name)}>
+                    onPress={() => fetch_register(username, pass, email, name, role, mainId)}>
                     <Text>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => fetch_groupList()}>
-                    <Text>Group List</Text>
+                    onPress={() => fetch_logout()}>
+                    <Text>Log Out?</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row' }}>
