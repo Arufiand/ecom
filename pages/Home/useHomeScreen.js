@@ -10,17 +10,18 @@ import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('siswa1');
-    const [pass, setPass] = useState('med1xsoft');
-    const [email, setEmail] = useState('siswa1@gmail.com');
-    const [name, setName] = useState('Siswa Alfian');
-    const [mainId, setMainId] = useState('147258');
+    const [username, setUsername] = useState('admin');
+    const [pass, setPass] = useState('adminadmin');
+    const [email, setEmail] = useState('alfiandannyarmanta@gmail.com');
+    const [name, setName] = useState('Alfian Danny A');
+    const [mainId, setMainId] = useState('080988');
     const [role, setRole] = useState('siswa');
     const [statusLogin, setStatusLogin] = useState(false);
 
     const [rcAuthToken, setRcAuthToken] = useState('');
     const [rcUserId, setRcUserId] = useState('');
     const [groups, setGroups] = useState([]);
+    const [users, setUsers] = useState([]);
     const [subtitle, setSubtitle] = useState('');
     const [subscribed, setSubscribed] = useState(false);
     const [rooms, setRooms] =useState([]);
@@ -37,6 +38,7 @@ const useHomeScreen = () => {
 
     useEffect(() => {
        fetch_groupList();
+       //fetch_usersList();
     }, [chat])
 
     fetch_auto_login_register = (username, pass, email, name) => {
@@ -116,7 +118,7 @@ const useHomeScreen = () => {
 
     fetch_register = (username, pass, email, name, mainId, role ) => {
 
-        var data = JSON.stringify({ "username": username, "email": email, "pass": pass, "name": name, "main_id": mainId, "user_type" : role });
+        var data = JSON.stringify({ "username": "aldanta", "email": email, "pass": pass, "name": name, "customField" : {"main_id": mainId, "user_type" : role} });
 
         var config = {
             method: 'post',
@@ -180,24 +182,46 @@ const useHomeScreen = () => {
                 setGroups(response.data.groups);
                 const start = Date.now();
                 if (subscribed == false) {
-                    try {
-                        for (let msg of response.data.groups) {
-                            const chats = {
-                                _id: msg._id,
-                                name: msg.name
-                            }
-                            let randomId = chats._id + start;
-                            console.log(`Random ID Grouplist : ${randomId}`);
-                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
-                        }
-                    } catch (err) {
-                        console.log(err);
-                    }
+                    // try {
+                    //     for (let msg of response.data.groups) {
+                    //         const chats = {
+                    //             _id: msg._id,
+                    //             name: msg.name
+                    //         }
+                    //         let randomId = chats._id + start;
+                    //         console.log(`Random ID Grouplist : ${randomId}`);
+                    //         authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
+                    //     }
+                    // } catch (err) {
+                    //     console.log(err);
+                    // }
                     setSubscribed(true);
                 }
                 else if (subscribed == true) {
                     console.log(`history has been subscribed!`);
                 }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    fetch_usersList = () => {
+
+        var config = {
+            method: 'get',
+            // url: 'http://172.16.200.56:3000/api/v1/users.list',
+            url: ep.get_usersList(),
+            headers: {
+                'X-Auth-Token': rcAuthToken,
+                'X-User-Id': rcUserId
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data.users, null, 2));
+                setUsers(response.data.users)
             })
             .catch(function (error) {
                 console.log(error);
@@ -226,6 +250,7 @@ const useHomeScreen = () => {
     },[chat])
 
     return [username, setUsername, pass, setPass, name, setName, email, 
-        setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_auto_login_register, fetch_logout, groups, rcAuthToken, rcUserId, subtitle, statusLogin];
+        setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
+        fetch_auto_login_register, fetch_logout, groups, rcAuthToken, rcUserId, subtitle, statusLogin];
 }
 export default useHomeScreen;

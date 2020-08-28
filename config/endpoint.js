@@ -127,6 +127,11 @@ export default class endpoint{
         return globalEP.http + "/api/v1/groups.list"
     }
 
+    get_usersList = () => {
+        console.log(`url getHistory : ${globalEP.http}/api/v1/users.list`);
+        return `${globalEP.http}/api/v1/users.list`;
+    }
+
     get_historyChat=(roomId)=>{
         console.log(`url getHistory : ${globalEP.http}/api/v1/groups.history?roomId=${roomId}`);
         return `${globalEP.http}/api/v1/groups.history?roomId=${roomId}`;
