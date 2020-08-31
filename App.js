@@ -21,8 +21,12 @@ const App = ({ navigation }) => {
 
     const ws_open = () => {
       ws.onopen = () => {
-        ws.send(ep.ws_rocket_chat_conn());
-        console.log(`socket connected!`);
+        try {
+          ws.send(ep.ws_rocket_chat_conn());
+          console.log(`socket connected!`);
+        } catch (error) {
+          console.log(JSON.stringify(error,null,2));
+        }
       }
     }
 

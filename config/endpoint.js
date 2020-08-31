@@ -1,11 +1,11 @@
 const globalEP = {
     //RocketChat Schadenfreude
-    // http: "http://172.21.15.191:3000",
-    // ws:   "ws://172.21.15.191:3000/websocket"
+    //http: "http://172.25.119.8:3000",
+    //ws:   "ws://172.25.119.8:3000/websocket"
 
     //RocketChat Kantor
-    http : "http://172.16.200.56:3000",
-    ws:    "ws://172.16.200.56:3000/websocket"
+    http    :"http://172.16.200.56:3000",
+    ws      :"ws://172.16.200.56:3000/websocket"
     
 };
 
