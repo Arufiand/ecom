@@ -18,9 +18,9 @@ const Router = () => {
                 <Stack.Screen name="Chat" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 }} component={ChatScreen}/>
-                <Stack.Screen name="Tutorial" options={{
+                {/* <Stack.Screen name="Tutorial" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                }} component={TutorialScreen}/>
+                }} component={TutorialScreen}/> */}
         </Stack.Navigator>
     )
 }
