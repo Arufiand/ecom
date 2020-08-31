@@ -182,19 +182,19 @@ const useHomeScreen = () => {
                 setGroups(response.data.groups);
                 const start = Date.now();
                 if (subscribed == false) {
-                    // try {
-                    //     for (let msg of response.data.groups) {
-                    //         const chats = {
-                    //             _id: msg._id,
-                    //             name: msg.name
-                    //         }
-                    //         let randomId = chats._id + start;
-                    //         console.log(`Random ID Grouplist : ${randomId}`);
-                    //         authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
-                    //     }
-                    // } catch (err) {
-                    //     console.log(err);
-                    // }
+                    try {
+                        for (let msg of response.data.groups) {
+                            const chats = {
+                                _id: msg._id,
+                                name: msg.name
+                            }
+                            let randomId = chats._id + start;
+                            console.log(`Random ID Grouplist : ${randomId}`);
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
+                        }
+                    } catch (err) {
+                        console.log(err);
+                    }
                     setSubscribed(true);
                 }
                 else if (subscribed == true) {
