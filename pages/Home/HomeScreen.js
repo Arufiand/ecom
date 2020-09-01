@@ -8,6 +8,7 @@ import label from '../../config/local_label_storage';
 import Colors from '../../config/utils';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
+import moment from 'moment';
 
 const HomeScreen = ({ route, navigation }) => {
 
@@ -49,25 +50,33 @@ const HomeScreen = ({ route, navigation }) => {
             );
         }
         else if (statusLogin == true) {
-            return (
-                <View style={{ width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle }}>
-                    <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                            {item.total == 0 ?
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => fetch_groupList()}>
-                                    <Text>Group List</Text>
-                                </TouchableOpacity>
-                                :
-                                <ListItem
-                                    title={item.name}
-                                    // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
-                                    subtitle={item.lastMessage.msg ? item.lastMessage.msg : subtitle}
-                                /> 
-                            }
-                    </TouchableOpacity>
-                </View>
-            );
+            if (item.lastMessage != "") {
+                return (
+                    <View style={{ width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle }}>
+                        <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                                {item.total == 0 ?
+                                    <TouchableOpacity
+                                        style={styles.button}
+                                        onPress={() => fetch_groupList()}>
+                                        <Text>Group List</Text>
+                                    </TouchableOpacity>
+                                    :
+                                    <ListItem
+                                        title={item.name}
+                                        // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                        subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                        // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                        rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                            <Text style={{ fontSize: 11 }}>
+                                                {moment(item.lastMessage.ts).format("DD MMM | H:m")}
+                                            </Text>
+                                        </View> : null}
+                                    />
+                                }
+                        </TouchableOpacity>
+                    </View>
+                );
+            }
         }
     }
     
