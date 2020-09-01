@@ -38,7 +38,7 @@ const useHomeScreen = () => {
 
     useEffect(() => {
        fetch_groupList();
-       //fetch_usersList();
+       fetch_usersList();
     }, [chat])
 
     fetch_auto_login_register = (username, pass, email, name) => {
@@ -251,6 +251,6 @@ const useHomeScreen = () => {
 
     return [username, setUsername, pass, setPass, name, setName, email, 
         setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
-        fetch_auto_login_register, fetch_logout, groups, rcAuthToken, rcUserId, subtitle, statusLogin];
+        fetch_auto_login_register, fetch_logout, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin];
 }
 export default useHomeScreen;
