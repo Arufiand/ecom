@@ -24,9 +24,6 @@ const useHomeScreen = () => {
     const [users, setUsers] = useState([]);
     const [subtitle, setSubtitle] = useState('');
     const [subscribed, setSubscribed] = useState(false);
-    const [rooms, setRooms] =useState([]);
-    const [channel, setChannel] = useState('');
-    const [selected, setSelected] = useState(new Map());
     const [incomingNotif, setIncomingNotif] = useState('');
 
     const ep = new EndPoint();
@@ -37,8 +34,8 @@ const useHomeScreen = () => {
     const { authContext, response, chat } = useStore();
 
     useEffect(() => {
-       fetch_groupList();
-       fetch_usersList();
+        fetch_usersList();
+        fetch_groupList();
     }, [chat])
 
     fetch_auto_login_register = (username, pass, email, name) => {
@@ -52,20 +49,20 @@ const useHomeScreen = () => {
             },
             data: dataLogin
         };
-            axios(configLogin)
-                .then(async response => {
-                    fetch_login(username, pass);
-                    setStatusLogin(true);
-                })
-                .catch(function (error) {
-                    console.log(JSON.stringify(error, null, 2));
-                    console.log(`Data Username dan Email belum ada! lakukan registrasi`);
-                    try {
-                        fetch_register(username, pass, email, name);
-                    } catch (error) {
-                        console.log(error);
-                    }
-                });
+        axios(configLogin)
+            .then(async response => {
+                fetch_login(username, pass);
+                setStatusLogin(true);
+            })
+            .catch(function (error) {
+                console.log(JSON.stringify(error, null, 2));
+                console.log(`Data Username dan Email belum ada! lakukan registrasi`);
+                try {
+                    fetch_register(username, pass, email, name);
+                } catch (error) {
+                    console.log(error);
+                }
+            });
     }
 
     fetch_login = async (username, pass, email, name) => {
@@ -85,11 +82,11 @@ const useHomeScreen = () => {
                         authContext.onSendRocketChat(ep.ws_rocket_login_token(res.data.data.authToken));
                         console.log(`token berhasil`);
                     }, 150);
-                    
+
                     try {
                         setTimeout(function () {
-                        authContext.onSendRocketChat(ep.ws_rocket_stream_notify_user(res.data.data.userId, ["message", "notification", "subscriptions-changed"]));
-                        console.log(`notify user berhasil`);
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_notify_user(res.data.data.userId, ["message", "notification", "subscriptions-changed"]));
+                            console.log(`notify user berhasil`);
                         }, 200);
                     } catch (error) {
                         console.log(error);
@@ -116,9 +113,9 @@ const useHomeScreen = () => {
 
     }
 
-    fetch_register = (username, pass, email, name, mainId, role ) => {
+    fetch_register = (username, pass, email, name, mainId, role) => {
 
-        var data = JSON.stringify({ "username": "aldanta", "email": email, "pass": pass, "name": name, "customField" : {"main_id": mainId, "user_type" : role} });
+        var data = JSON.stringify({ "username": "aldanta", "email": email, "pass": pass, "name": name, "customField": { "main_id": mainId, "user_type": role } });
 
         var config = {
             method: 'post',
@@ -132,13 +129,13 @@ const useHomeScreen = () => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                setTimeout(function() {fetch_login(username, pass)}, 1500);
+                setTimeout(function () { fetch_login(username, pass) }, 1500);
             })
             .catch(function (error) {
                 console.log(JSON.stringify(error.name, null, 2));
                 if (error.name == "Error") {
                     console.log(error);
-                    setTimeout(function() {fetch_login(username, pass)}, 1500);
+                    setTimeout(function () { fetch_login(username, pass) }, 1500);
                 }
             });
     }
@@ -155,13 +152,13 @@ const useHomeScreen = () => {
             data: data
         };
         axios(config)
-        .then(function (response) {
-            console.log(`Response Logout ${JSON.stringify(response.data, null, 2)}`);
-            setStatusLogin(false);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(function (response) {
+                console.log(`Response Logout ${JSON.stringify(response.data, null, 2)}`);
+                setStatusLogin(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     fetch_groupList = () => {
@@ -178,7 +175,7 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
+                //console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
                 const start = Date.now();
                 if (subscribed == false) {
@@ -189,7 +186,7 @@ const useHomeScreen = () => {
                                 name: msg.name
                             }
                             let randomId = chats._id + start;
-                            console.log(`Random ID Grouplist : ${randomId}`);
+                            //rconsole.log(`Random ID Grouplist : ${randomId}`);
                             authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
                         }
                     } catch (err) {
@@ -210,46 +207,41 @@ const useHomeScreen = () => {
 
         var config = {
             method: 'get',
-            // url: 'http://172.16.200.56:3000/api/v1/users.list',
             url: ep.get_usersList(),
             headers: {
                 'X-Auth-Token': rcAuthToken,
                 'X-User-Id': rcUserId
             }
         };
-
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data.users, null, 2));
-                setUsers(response.data.users)
+                //console.log(JSON.stringify(response.data.users, null, 2));
+                const start = Date.now();
+                if (subscribed == false) {
+                    try {
+                        const user = response.data.users.filter(user => user.customFields.user_type == "guru_bk" ).map(user => {
+                            setUsers(prevArray => [...prevArray, user]);
+                            const userChat = {
+                                _id: user._id,
+                                name: user.name
+                            }
+                            let randomId = userChat._id + start;
+                            console.log(`name : ${userChat.name} and his/her user ID : ${userChat._id}`);
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, userChat._id));
+                        })
+                    } catch (err) {
+                        console.log(err);
+                    }
+                }
+                else if (subscribed == true) {
+                    console.log(`history has been subscribed!`);
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
-    
-    useEffect(() => {
-    fetch_groupHistory = async (roomId) => {
-        var data = '';
-
-        var config = {
-            method: 'get',
-            url: ep.get_historyChat(roomId),
-            headers: {
-                'X-Auth-Token': authToken,
-                'X-User-Id': userId
-            },
-            data: data
-
-        };
-        axios(config)
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
-    },[chat])
-
-    return [username, setUsername, pass, setPass, name, setName, email, 
+    return [username, setUsername, pass, setPass, name, setName, email,
         setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
         fetch_auto_login_register, fetch_logout, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin];
 }
