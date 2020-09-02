@@ -241,6 +241,28 @@ const useHomeScreen = () => {
                 console.log(error);
             });
     }
+
+    // useEffect(() => {
+    //     fetch_groupHistory = async (roomId) => {
+    //         var data = '';
+
+    //         var config = {
+    //             method: 'get',
+    //             url: ep.get_historyChat(roomId),
+    //             headers: {
+    //                 'X-Auth-Token': authToken,
+    //                 'X-User-Id': userId
+    //             },
+    //             data: data
+
+    //         };
+    //         axios(config)
+    //             .catch(function (error) {
+    //                 console.log(error);
+    //             });
+    //     }
+    // }, [chat])
+
     return [username, setUsername, pass, setPass, name, setName, email,
         setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
         fetch_auto_login_register, fetch_logout, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin];
