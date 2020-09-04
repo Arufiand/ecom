@@ -16,7 +16,7 @@ const HomeScreen = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername, pass, setPass, name, setName, email,
         setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
-        fetch_auto_login_register, fetch_logout, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin] = useHomeScreen();
+        fetch_auto_login_register, fetch_logout, fetch_avatar, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin] = useHomeScreen();
 
     const renderItemGroups = ({ item, index }) => {
         let roomId = item._id;
@@ -34,14 +34,13 @@ const HomeScreen = ({ route, navigation }) => {
                         <View style={Styles.centeredView}>
                             <View style={Styles.modalView}>
                                 <Text style={Styles.modalText}>Hello World!</Text>
-
                                 <TouchableOpacity
                                     style={{ ...Styles.openButton, backgroundColor: "#2196F3" }}
                                     onPress={() => {
                                         setModalVisible(!modalVisible);
                                     }}
                                 >
-                                    <Text style={Styles.textStyle}>Hide Modal</Text>
+                                <Text style={Styles.textStyle}>Hide Modal</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -61,11 +60,14 @@ const HomeScreen = ({ route, navigation }) => {
                                         <Text>Group List</Text>
                                     </TouchableOpacity>
                                     :
-                                    
                                     <ListItem
                                         title={item.name}
                                         // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
                                         subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                        // leftAvatar={{
+                                        //     source: fetch_avatar(item.fname) && { uri: fetch_avatar(item.fname) },
+                                        //   // title: item.name
+                                        // }}
                                         // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
                                         rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
                                             <Text style={{ fontSize: 11 }}>
@@ -129,6 +131,10 @@ const HomeScreen = ({ route, navigation }) => {
                                         title={item.name}
                                         // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
                                         subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                        leftAvatar={{
+                                          source: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.biography.com%2Factor%2Fmatt-damon&psig=AOvVaw3jStgwmgfxmBt6U82RkzF-&ust=1599290234999000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjnmsb6zusCFQAAAAAdAAAAABAD",
+                                          // title: item.name
+                                        }}
                                         // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
                                         rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
                                             <Text style={{ fontSize: 11 }}>

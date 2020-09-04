@@ -215,11 +215,11 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                //console.log(JSON.stringify(response.data.users, null, 2));
+                console.log(JSON.stringify(response.data.users, null, 2));
                 const start = Date.now();
                 if (subscribed == false) {
                     try {
-                        const user = response.data.users.filter(user => user.customFields.user_type == "guru_bk" ).map(user => {
+                        const user = response.data.users.filter(user => user.username == "munirjb_gmail_com" ).map(user => {
                             setUsers(prevArray => [...prevArray, user]);
                             const userChat = {
                                 _id: user._id,
@@ -236,6 +236,22 @@ const useHomeScreen = () => {
                 else if (subscribed == true) {
                     console.log(`history has been subscribed!`);
                 }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    fetch_avatar = (username) => {
+        var config = {
+            method: 'get',
+            url: ep.get_avatar(username),
+            headers: {}
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -265,6 +281,6 @@ const useHomeScreen = () => {
 
     return [username, setUsername, pass, setPass, name, setName, email,
         setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
-        fetch_auto_login_register, fetch_logout, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin];
+        fetch_auto_login_register, fetch_logout, fetch_avatar, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin];
 }
 export default useHomeScreen;

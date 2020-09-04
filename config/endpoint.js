@@ -147,4 +147,8 @@ export default class endpoint{
         return `${globalEP.http}/api/v1/chat.getMentionedMessages?roomId=${roomId}`
     }
 
+    get_avatar = (subject) => {
+        return `${globalEP.http}/avatar/${subject}`
+    }
+
 }

@@ -40,6 +40,7 @@ const ChatScreen = ({ route, navigation }) => {
             }}
             loadEarlier={true}
             renderBubble={renderBubble}
+            showAvatarForEveryMessage={true}
 
         />
     )
