@@ -1,12 +1,13 @@
 //This is an example code for Bottom Navigation//
 import React,{ useState} from 'react';
 //import react in our code.
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal,ScrollView } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal,ScrollView, DatePickerAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import label from '../../config/local_label_storage';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
 import moment from 'moment';
+import 'moment/locale/id'
 import Styles from '../Styling/chatStyle'
 import Colors from '../../config/utils';
 
@@ -22,60 +23,31 @@ const HomeScreen = ({ route, navigation }) => {
         let roomId = item._id;
         if (statusLogin == false) {
             return (
-              <View>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                        }}
-                    >
-                        <View style={Styles.centeredView}>
-                            <View style={Styles.modalView}>
-                                <Text style={Styles.modalText}>Hello World!</Text>
-                                <TouchableOpacity
-                                    style={{ ...Styles.openButton, backgroundColor: "#2196F3" }}
-                                    onPress={() => {
-                                        setModalVisible(!modalVisible);
-                                    }}
-                                >
-                                <Text style={Styles.textStyle}>Hide Modal</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-              </View>  
+                <View><Text>Belum Login!</Text></View>
             );
         }
         else if (statusLogin == true) {
             if (item.lastMessage != "") {
+                let todayDate = moment(new Date()).format("DD MMM YY") 
+                //console.log(`todayDate= ${todayDate}`);
                 return (
+                    
                     <View style={Styles.renderItem}>
                         <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                                {item.total == 0 ?
-                                    <TouchableOpacity
-                                        style={Styles.button}
-                                        onPress={() => fetch_groupList()}>
-                                        <Text>Group List</Text>
-                                    </TouchableOpacity>
-                                    :
                                     <ListItem
                                         title={item.name}
                                         // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
                                         subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
-                                        // leftAvatar={{
-                                        //     source: fetch_avatar(item.fname) && { uri: fetch_avatar(item.fname) },
-                                        //   // title: item.name
-                                        // }}
-                                        // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                        leftAvatar={{
+                                            source: { uri: fetch_avatar(item.name) }
+                                        }}
                                         rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
-                                            <Text style={{ fontSize: 11 }}>
-                                                {moment(item.lastMessage.ts).format("DD MMM | H:m")}
+                                            <Text style={{ fontSize: 11 }}>     
+                                                {moment(item.lastMessage.ts).format("DD MMM YY") == todayDate ? moment(item.lastMessage.ts).local().startOf('seconds').fromNow() : moment(item.lastMessage.ts).format("DD MMM YY") }
+                                                
                                             </Text>
                                         </View> : null}
                                      />
-                                }
                         </TouchableOpacity>
                     </View>
                 );
@@ -87,31 +59,7 @@ const HomeScreen = ({ route, navigation }) => {
         let roomId = item._id;
         if (statusLogin == false) {
             return (
-              <View>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                        }}
-                    >
-                        <View style={Styles.centeredView}>
-                            <View style={Styles.modalView}>
-                                <Text style={Styles.modalText}>Hello World!</Text>
-
-                                <TouchableOpacity
-                                    style={{ ...Styles.openButton, backgroundColor: "#2196F3" }}
-                                    onPress={() => {
-                                        setModalVisible(!modalVisible);
-                                    }}
-                                >
-                                    <Text style={Styles.textStyle}>Hide Modal</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-              </View>  
+              <View><Text>Belum Login!</Text></View>  
             );
         }
         else if (statusLogin == true) {
@@ -119,30 +67,21 @@ const HomeScreen = ({ route, navigation }) => {
                 return (
                     <View style={Styles.renderItem}>
                         <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                                {item.total == 0 ?
-                                    <TouchableOpacity
-                                        style={Styles.button}
-                                        onPress={() => fetch_usersList()}>
-                                        <Text>Group List</Text>
-                                    </TouchableOpacity>
-                                    :
-                                    
-                                    <ListItem
-                                        title={item.name}
-                                        // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
-                                        subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
-                                        leftAvatar={{
-                                          source: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.biography.com%2Factor%2Fmatt-damon&psig=AOvVaw3jStgwmgfxmBt6U82RkzF-&ust=1599290234999000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjnmsb6zusCFQAAAAAdAAAAABAD",
-                                          // title: item.name
-                                        }}
-                                        // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
-                                        rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
-                                            <Text style={{ fontSize: 11 }}>
-                                                {moment(item.lastMessage.ts).format("DD MMM | H:m")}
-                                            </Text>
-                                        </View> : null}
-                                     />
-                                }
+                                <ListItem
+                                    title={item.name}
+                                    // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                    subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                    leftAvatar={{
+                                        source: { uri: fetch_avatar(item.username) }
+                                        // title: item.name
+                                    }}
+                                    // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                    rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                        <Text style={{ fontSize: 11 }}>
+                                            {moment(item.lastMessage.ts).format("DD MMM | H:m")}
+                                        </Text>
+                                    </View> : null}
+                                    />
                         </TouchableOpacity>
                     </View>
                 );

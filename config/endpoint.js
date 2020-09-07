@@ -148,7 +148,7 @@ export default class endpoint{
     }
 
     get_avatar = (subject) => {
-        return `${globalEP.http}/avatar/${subject}`
+        return `http://172.16.200.56:3000/avatar/munirjb_gmail_com?size=50`
     }
 
 }

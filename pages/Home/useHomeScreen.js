@@ -175,7 +175,7 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                //console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
+                console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
                 const start = Date.now();
                 if (subscribed == false) {
@@ -215,11 +215,11 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data.users, null, 2));
+                //console.log(JSON.stringify(response.data.users, null, 2));
                 const start = Date.now();
                 if (subscribed == false) {
                     try {
-                        const user = response.data.users.filter(user => user.username == "munirjb_gmail_com" ).map(user => {
+                        const user = response.data.users.filter(user => user.username == "GuruBK" ).map(user => {
                             setUsers(prevArray => [...prevArray, user]);
                             const userChat = {
                                 _id: user._id,
@@ -243,21 +243,8 @@ const useHomeScreen = () => {
     }
 
     fetch_avatar = (username) => {
-        var config = {
-            method: 'get',
-            url: ep.get_avatar(username),
-            headers: {}
-        };
-
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        return `http://172.16.200.56:3000/avatar/${username}?size=50`;
     }
-
     // useEffect(() => {
     //     fetch_groupHistory = async (roomId) => {
     //         var data = '';

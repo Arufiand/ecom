@@ -6,6 +6,6 @@ export default Label = {
     rc_user_id: 'rc_user_id',
     rc_user_username: 'rc_user_username',
     rc_user_name: 'rc_user_name',
-    rc_warning_banner: ' rc_warning_banner'
-
+    rc_warning_banner: ' rc_warning_banner',
+    rc_avatar: "http://172.16.200.56:3000/avatar/munirjb_gmail_com?size=50"
 }
