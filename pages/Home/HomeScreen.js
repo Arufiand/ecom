@@ -131,8 +131,12 @@ const HomeScreen = ({ route, navigation }) => {
                     <Text>Log Out?</Text>
                 </TouchableOpacity>
             </View>
-                <View style={{ height : 200}}>
-                    <Text style={Styles.text}>Grup Kelas</Text>
+            <View style={{ height: 420 }}>
+                    <FlatList
+                        keyExtractor={(item, index) => item._id}
+                        data={users}
+                        renderItem={renderItemUsers}
+                    />
                     <ScrollView nestedScrollEnabled = {true}>
                         <FlatList
                             keyExtractor={(item, index) => item._id}
@@ -140,17 +144,7 @@ const HomeScreen = ({ route, navigation }) => {
                             renderItem={renderItemGroups}
                         />
                     </ScrollView>
-                </View>
-                <View style={{ height : 200}}>
-                    <Text style={Styles.text}>Contact</Text>
-                    <ScrollView nestedScrollEnabled = {true}>
-                        <FlatList
-                            keyExtractor={(item, index) => item._id}
-                            data={users}
-                            renderItem={renderItemUsers}
-                        />
-                    </ScrollView>
-                </View>
+            </View>
         </View>
 
     )

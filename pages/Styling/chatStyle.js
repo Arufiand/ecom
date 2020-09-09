@@ -68,7 +68,7 @@ const Styles = StyleSheet.create({
         marginTop: 0,
         width: 200,
     },
-    renderItem: { width: responsiveWidth(99), padding: 7, borderRadius: 4, backgroundColor: Colors.circle },
+    renderItem: { width: responsiveWidth(99), height: 70, padding: 1, borderRadius: 4, backgroundColor: Colors.circle },
     CardMenu: {
         backgroundColor: Colors.cardMenu,
         width: responsiveWidth(5),
@@ -76,7 +76,7 @@ const Styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 4,
+        borderRadius: 1,
         marginTop: 10,
         marginRight: -5
     }
