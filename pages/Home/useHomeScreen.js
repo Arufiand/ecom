@@ -75,7 +75,7 @@ const useHomeScreen = () => {
             user: username,
             password: pass
         }, axiosConfig).then(async res => {
-            console.log(" fetch_login : ", JSON.stringify(res.data, null, 2));
+            console.log(" fetch_login : ", JSON.stringify(res.data, null, 4));
             if (res.data.status == "success") {
                 try {
                     setTimeout(function () {
@@ -100,6 +100,8 @@ const useHomeScreen = () => {
                     setRcAuthToken(res.data.data.authToken)
                     await AsyncStorage.setItem(label.rc_user_auth_token, res.data.data.authToken);
                     await AsyncStorage.setItem(label.rc_user_name, res.data.data.me.name);
+                    await AsyncStorage.setItem(label.rc_user_email, res.data.data.me.emails.address);
+                    await AsyncStorage.setItem(label.rc_user_password, res.data.data.me.services.password.bcrypt);
                     await AsyncStorage.setItem(label.rc_user_username, res.data.data.me.username);
                 }
                 catch (err) {
@@ -175,7 +177,7 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
+                //console.log(`Data Group List : ${JSON.stringify(response.data, null, 2)}`);
                 setGroups(response.data.groups);
                 const start = Date.now();
                 if (subscribed == false) {
@@ -187,7 +189,7 @@ const useHomeScreen = () => {
                             }
                             let randomId = chats._id + start;
                             //rconsole.log(`Random ID Grouplist : ${randomId}`);
-                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
+                            //authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
                         }
                     } catch (err) {
                         console.log(err);
@@ -226,7 +228,7 @@ const useHomeScreen = () => {
                                 name: user.name
                             }
                             let randomId = userChat._id + start;
-                            console.log(`name : ${userChat.name} and his/her user ID : ${userChat._id}`);
+                            //console.log(`name : ${userChat.name} and his/her user ID : ${userChat._id}`);
                             authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, userChat._id));
                         })
                     } catch (err) {

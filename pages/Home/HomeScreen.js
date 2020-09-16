@@ -10,6 +10,7 @@ import moment from 'moment';
 import 'moment/locale/id'
 import Styles from '../Styling/chatStyle'
 import Colors from '../../config/utils';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
 
 const HomeScreen = ({ route, navigation }) => {
 
@@ -131,7 +132,7 @@ const HomeScreen = ({ route, navigation }) => {
                     <Text>Log Out?</Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ height: 420 }}>
+            <View style={ {height: 400}}>
                     <FlatList
                         keyExtractor={(item, index) => item._id}
                         data={users}
@@ -144,6 +145,11 @@ const HomeScreen = ({ route, navigation }) => {
                             renderItem={renderItemGroups}
                         />
                     </ScrollView>
+                    <FlatList
+                        keyExtractor={(item, index) => item._id}
+                        data={users}
+                        renderItem={renderItemUsers}
+                    />
             </View>
         </View>
 
