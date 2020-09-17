@@ -10,7 +10,8 @@ const useChatScreen = ({ route }) => {
     const ep = new EndPoint();
 
     const roomId = route.params.roomId;
-    const authToken = route.params.rcAuthToken;
+    const usernameRoom = route.params.usernameRoom;
+    //const authToken = route.params.rcAuthToken;
     const userId = route.params.rcUserId;
 
     const { authContext, response, chat, card } = useStore();
@@ -21,7 +22,15 @@ const useChatScreen = ({ route }) => {
 
     useEffect(() => {
         //get_history_message();
-        ws_rc_load_message(roomId);
+        // ws_rc_load_message(roomId);
+        switch (roomId || usernameRoom) {
+            case roomId:
+                console.log(`isi room ID : ${roomId}`);
+                break;
+            case usernameRoom:
+                console.log(`isi username : ${usernameRoom}`);
+                break;
+        }
     }, [])
 
     useEffect(() => {
@@ -49,7 +58,7 @@ const useChatScreen = ({ route }) => {
         }
         else if (loadHistory == false) {
             try {
-                console.log(`ini masuk sini ! dan isi chat.result.messages = ${JSON.stringify(chat.result.messages, null, 2)}`);
+                //console.log(`ini masuk sini ! dan isi chat.result.messages = ${JSON.stringify(chat.result.messages, null, 2)}`);
                 for (let msg of chat.result.messages) {
                     const oldChat = {
                         _id: msg._id,

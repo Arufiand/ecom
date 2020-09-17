@@ -57,7 +57,8 @@ const HomeScreen = ({ route, navigation }) => {
     }
 
     const renderItemUsers = ({ item, index }) => {
-        let roomId = item._id;
+        let usernameRoom = item.username;
+        //console.log(`roomId = ${roomId}`);
         if (statusLogin == false) {
             return (
               <View><Text>Belum Login!</Text></View>  
@@ -67,7 +68,7 @@ const HomeScreen = ({ route, navigation }) => {
             if (item.lastMessage != "") {
                 return (
                     <View style={Styles.renderItem}>
-                        <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                        <TouchableOpacity style={{ backgroundColor: Colors.circle }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
                                 <ListItem
                                     title={item.name}
                                     // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}

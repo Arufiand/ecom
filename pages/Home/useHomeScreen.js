@@ -191,7 +191,7 @@ const useHomeScreen = () => {
                             }
                             let randomId = chats._id + start;
                             //rconsole.log(`Random ID Grouplist : ${randomId}`);
-                            //authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
+                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, chats._id));
                         }
                     } catch (err) {
                         console.log(err);
@@ -219,7 +219,7 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                // console.log(JSON.stringify(response.data.users, null, 2));
+                console.log(JSON.stringify(response.data.users, null, 2));
                 const start = Date.now();
                 if (subscribed == false) {
                     try {
@@ -230,9 +230,9 @@ const useHomeScreen = () => {
                             const userChat = {
                                 _id: user._id,
                                 name: user.name,
-                                username : user.username,
+                                username : user.username
                             }                        
-                                authContext.onSendRocketChat(ep.ws_create_direct_message(userChat.username)) 
+                                //authContext.onSendRocketChat(ep.ws_create_direct_message(userChat.username))
                                 let randomId = userChat._id + start;
                                 authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, userChat._id));   
                         })
