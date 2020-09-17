@@ -25,9 +25,10 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     useEffect(() => {
-        console.log(`messages isinya : ${JSON.stringify(chat, null, 2)}`)
+        // console.log(`messages isinya : ${JSON.stringify(chat, null, 2)}`)
         if (chat.msg == "changed" && loadHistory == true) {
             if (chat.fields.args[0].u._id != userId && chat.fields.eventName == roomId) {
+                console.log(`ini berapa kali hayoooo`);
                 try {
                     //console.log(`id chatter = ${JSON.stringify(chat.fields.args[0].u._id, null, 2)} + room yang di chat = ${JSON.stringify(chat.fields.eventName, null, 2)}`);
                     const newMsg = {
@@ -48,8 +49,9 @@ const useChatScreen = ({ route }) => {
         }
         else if (loadHistory == false) {
             try {
+                console.log(`ini masuk sini ! dan isi chat.result.messages = ${JSON.stringify(chat.result.messages, null, 2)}`);
                 for (let msg of chat.result.messages) {
-                    const chat = {
+                    const oldChat = {
                         _id: msg._id,
                         text: msg.msg,
                         createdAt: msg.ts.$date,
@@ -59,7 +61,7 @@ const useChatScreen = ({ route }) => {
                             avatar: 'https://placeimg.com/140/140/any',
                         }
                     }
-                    setMessages(prevArray => [...prevArray, chat]);
+                    setMessages(prevArray => [...prevArray, oldChat]);
                     setLoadHistory(true);
                 }
                 // end looping chat
@@ -74,7 +76,6 @@ const useChatScreen = ({ route }) => {
     const ws_rc_load_message = useCallback(() => {
         authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId))
         console.log(`response ${JSON.stringify(chat, null, 2)}`);
-
     }, [])
 
 

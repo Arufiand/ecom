@@ -101,6 +101,15 @@ export default class endpoint{
         })
     }
 
+    ws_create_direct_message(username) {
+        return JSON.stringify({
+            "msg": "method",
+            "method": "createDirectMessage",
+            "id": "42",
+            "params": [username]
+        })
+    }
+
 
 
     post_login () {

@@ -25,6 +25,7 @@ const useHomeScreen = () => {
     const [subtitle, setSubtitle] = useState('');
     const [subscribed, setSubscribed] = useState(false);
     const [incomingNotif, setIncomingNotif] = useState('');
+    const [rcUsername, setRcUsername] = useState('');
 
     const ep = new EndPoint();
 
@@ -52,6 +53,7 @@ const useHomeScreen = () => {
         axios(configLogin)
             .then(async response => {
                 fetch_login(username, pass);
+                setRcUsername(await AsyncStorage.getItem(label.rc_user_name));
                 setStatusLogin(true);
             })
             .catch(function (error) {
@@ -217,19 +219,22 @@ const useHomeScreen = () => {
         };
         axios(config)
             .then(function (response) {
-                //console.log(JSON.stringify(response.data.users, null, 2));
+                // console.log(JSON.stringify(response.data.users, null, 2));
                 const start = Date.now();
                 if (subscribed == false) {
                     try {
-                        const user = response.data.users.filter(user => user.username == "GuruBK" ).map(user => {
+                        const user = response.data.users.filter(user => user.customFields.user_type == "guru_wali" && user.username != rcUsername).map(user => {
+                            //console.log(`${JSON.stringify(user, null, 2)}`);
                             setUsers(prevArray => [...prevArray, user]);
+                            setUsers(response.data.users)
                             const userChat = {
                                 _id: user._id,
-                                name: user.name
-                            }
-                            let randomId = userChat._id + start;
-                            //console.log(`name : ${userChat.name} and his/her user ID : ${userChat._id}`);
-                            authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, userChat._id));
+                                name: user.name,
+                                username : user.username,
+                            }                        
+                                authContext.onSendRocketChat(ep.ws_create_direct_message(userChat.username)) 
+                                let randomId = userChat._id + start;
+                                authContext.onSendRocketChat(ep.ws_rocket_stream_room_message(randomId, userChat._id));   
                         })
                     } catch (err) {
                         console.log(err);
