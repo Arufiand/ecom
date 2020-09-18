@@ -32,12 +32,23 @@ const useChatScreen = ({ route }) => {
             case usernameRoom:
                 console.log(`isi username : ${usernameRoom}`);
                 ws_rc_create_direct_message(usernameRoom);
-                im_history_chat("to46RBq8iqtaxJHxiuxBioi5MbJkaF9YFt");
-                //ws_rc_load_message("to46RBq8iqtaxJHxiuxBioi5MbJkaF9YFt");
-                console.log(`isi dmResponse ${JSON.stringify(dmResponse, null, 2)}`);
                 break;
         }
     }, [])
+
+    useEffect(() => {
+            let prop = "result"
+            if (response.hasOwnProperty(prop)) {
+                if (response.result.hasOwnProperty("rid"))
+                //console.log(`response = ${response.result.rid}`);
+                im_history_chat(response.result.rid);
+            }
+            else {
+                console.log(`Tidak ada key ini`);
+            }
+            //console.log(`response = ${response.result.rid}`);
+            
+    }, [response])
 
     useEffect(() => {
         // console.log(`messages isinya : ${JSON.stringify(chat, null, 2)}`)
@@ -123,7 +134,7 @@ const useChatScreen = ({ route }) => {
                         user: {
                             _id: msg.u._id,
                             name: msg.u.name,
-                            avatar: 'https://placeimg.com/140/140/any',
+                            //avatar: 'https://placeimg.com/140/140/any',
                         }
                     }
                     setMessages(prevArray => [...prevArray, chat])
