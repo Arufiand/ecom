@@ -11,24 +11,30 @@ const useChatScreen = ({ route }) => {
 
     const roomId = route.params.roomId;
     const usernameRoom = route.params.usernameRoom;
-    //const authToken = route.params.rcAuthToken;
+    const authToken = route.params.rcAuthToken;
     const userId = route.params.rcUserId;
 
-    const { authContext, response, chat, card } = useStore();
+    const { authContext, response, chat, dmResponse } = useStore();
 
     // console.log(`room id : ${roomId}, authToken = ${authToken}, user Id = ${userId}`);
     const [messages, setMessages] = useState([]);
     const [loadHistory, setLoadHistory] = useState(false);
 
     useEffect(() => {
-        //get_history_message();
-        // ws_rc_load_message(roomId);
+        
+        
         switch (roomId || usernameRoom) {
             case roomId:
                 console.log(`isi room ID : ${roomId}`);
+                //ws_rc_load_message(roomId);
+                get_history_message(roomId);
                 break;
             case usernameRoom:
                 console.log(`isi username : ${usernameRoom}`);
+                ws_rc_create_direct_message(usernameRoom);
+                im_history_chat("to46RBq8iqtaxJHxiuxBioi5MbJkaF9YFt");
+                //ws_rc_load_message("to46RBq8iqtaxJHxiuxBioi5MbJkaF9YFt");
+                console.log(`isi dmResponse ${JSON.stringify(dmResponse, null, 2)}`);
                 break;
         }
     }, [])
@@ -56,36 +62,79 @@ const useChatScreen = ({ route }) => {
                 }
             }
         }
-        else if (loadHistory == false) {
-            try {
-                //console.log(`ini masuk sini ! dan isi chat.result.messages = ${JSON.stringify(chat.result.messages, null, 2)}`);
-                for (let msg of chat.result.messages) {
-                    const oldChat = {
+        // else if (loadHistory == false) {
+        //     try {
+        //         //console.log(`ini masuk sini ! dan isi chat.result.messages = ${JSON.stringify(chat.result.messages, null, 2)}`);
+        //         for (let msg of chat.result.messages) {
+        //             const oldChat = {
+        //                 _id: msg._id,
+        //                 text: msg.msg,
+        //                 createdAt: msg.ts.$date,
+        //                 user: {
+        //                     _id: msg.u._id,
+        //                     name: msg.u.name,
+        //                     avatar: 'https://placeimg.com/140/140/any',
+        //                 }
+        //             }
+        //             setMessages(prevArray => [...prevArray, oldChat]);
+        //             setLoadHistory(true);
+        //         }
+        //         /// end looping chat
+        //     } catch (error) {
+        //         console.log(error);
+        //     }
+        // }
+    }, [chat])
+
+    //#region websocket
+
+    const ws_rc_load_message = useCallback((roomId) => {
+        authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId))
+        console.log(`response ${JSON.stringify(chat, null, 2)}`);
+    }, []);
+
+    const ws_rc_create_direct_message = useCallback((usernameRoom) => {
+        console.log(`isi dmResponse di ws ${JSON.stringify(chat.result.rid, null, 2)}`);
+        authContext.onSendRocketChat(ep.ws_create_direct_message(usernameRoom))
+        // .then( async (res) => {
+        //     console.log(`creating direct room message with result = ${res}`);
+        // })
+    },[]);
+
+    const im_history_chat = (roomId) => {
+
+        var config = {
+            method: 'get',
+            url: ep.get_im_history_chat(roomId),
+            headers: {
+                'X-Auth-Token': authToken,
+                'X-User-Id': userId
+            }
+        };
+
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data, null, 2));
+                for (let msg of response.data.messages) {
+                    const chat = {
                         _id: msg._id,
                         text: msg.msg,
-                        createdAt: msg.ts.$date,
+                        createdAt: msg.ts,
                         user: {
                             _id: msg.u._id,
                             name: msg.u.name,
                             avatar: 'https://placeimg.com/140/140/any',
                         }
                     }
-                    setMessages(prevArray => [...prevArray, oldChat]);
+                    setMessages(prevArray => [...prevArray, chat])
                     setLoadHistory(true);
                 }
                 // end looping chat
-            } catch (error) {
+            })
+            .catch(function (error) {
                 console.log(error);
-            }
-        }
-    }, [chat])
-
-    //#region websocket
-
-    const ws_rc_load_message = useCallback(() => {
-        authContext.onSendRocketChat(ep.ws_rocket_load_lastest_history(roomId))
-        console.log(`response ${JSON.stringify(chat, null, 2)}`);
-    }, [])
+            });
+    }
 
 
     //#endregion
@@ -103,43 +152,44 @@ const useChatScreen = ({ route }) => {
     }, [])
 
     //#region Normal REST API
-    // get_history_message = () => {
+    get_history_message = () => {
 
-    //     var data = '';
+        var data = '';
 
-    //     var config = {
-    //         method: 'get',
-    //         url: ep.get_historyChat(roomId),
-    //         headers: {
-    //             'X-Auth-Token': authToken,
-    //             'X-User-Id': userId
-    //         },
-    //         data: data
-    //     };
+        var config = {
+            method: 'get',
+            url: ep.get_historyChat(roomId),
+            headers: {
+                'X-Auth-Token': authToken,
+                'X-User-Id': userId
+            },
+            data: data
+        };
 
-    //     axios(config)
-    //         .then(function (response) {
+        axios(config)
+            .then(function (response) {
 
-    //             // looping untuk chat array
-    //             for (let msg of response.data.messages){
-    //                 const chat = {
-    //                     _id: msg._id,
-    //                     text: msg.msg,
-    //                     createdAt: msg.ts,
-    //                     user: {
-    //                         _id: msg.u._id,
-    //                         name: msg.u.name,
-    //                         avatar: 'https://placeimg.com/140/140/any',
-    //                     }
-    //                 }
-    //                 setMessages(prevArray => [...prevArray, chat])
-    //             }
-    //             // end looping chat
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
+                // looping untuk chat array
+                for (let msg of response.data.messages){
+                    const chat = {
+                        _id: msg._id,
+                        text: msg.msg,
+                        createdAt: msg.ts,
+                        user: {
+                            _id: msg.u._id,
+                            name: msg.u.name,
+                            avatar: 'https://placeimg.com/140/140/any',
+                        }
+                    }
+                    setMessages(prevArray => [...prevArray, chat])
+                    setLoadHistory(true);
+                }
+                // end looping chat
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     //#endregion
 
     return [messages, setMessages, onSend, roomId, userId];

@@ -160,4 +160,8 @@ export default class endpoint{
         return `http://172.16.200.56:3000/avatar/munirjb_gmail_com?size=50`
     }
 
+    get_im_history_chat = (roomId) => {
+        return `${globalEP.http}/api/v1/im.history?roomId=${roomId}`
+
+    }
 }

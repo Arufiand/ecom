@@ -146,11 +146,11 @@ const HomeScreen = ({ route, navigation }) => {
                             renderItem={renderItemGroups}
                         />
                     </ScrollView>
-                    <FlatList
+                    {/* <FlatList
                         keyExtractor={(item, index) => item._id}
                         data={users}
                         renderItem={renderItemUsers}
-                    />
+                    /> */}
             </View>
         </View>
 

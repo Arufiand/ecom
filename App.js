@@ -13,10 +13,10 @@ const Stack = createStackNavigator();
 
 const App = ({ navigation }) => {
   const ep = new endpoint();
-  const ws = new WebSocket(ep.ws_connection())
-  const [response, setResponse] = useState('')
-  const [chat, setChat] = useState('')
-  const [card, setCard] = useState([''])
+  const ws = new WebSocket(ep.ws_connection());
+  const [response, setResponse] = useState('');
+  const [chat, setChat] = useState('');
+  const [dmResponse, setDmResponse] = useState('');
   useEffect(() => {
 
     const ws_open = () => {
@@ -55,6 +55,9 @@ const App = ({ navigation }) => {
         }
         if (message.msg == "result") {
           setChat(message);
+        }
+        if (message.msg == "result") {
+          setDmResponse(message);
         }
       }
     }
@@ -129,7 +132,7 @@ const App = ({ navigation }) => {
   // }, [pushToken]);
 
   return (
-    <AppContext.Provider value={{ authContext, response, card, chat }}>
+    <AppContext.Provider value={{ authContext, response, dmResponse, chat }}>
       <NavigationContainer>
         <Router />
       </NavigationContainer>
