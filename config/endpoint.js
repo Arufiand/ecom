@@ -4,8 +4,13 @@ const globalEP = {
     //ws:   "ws://172.25.119.8:3000/websocket"
 
     //RocketChat Kantor
-    http    :"http://172.16.200.56:3000",
-    ws      :"ws://172.16.200.56:3000/websocket"
+    //saat url menggunakan WSL (https), untuk websocket wajib gunakan wss, bukan ws
+    http    :"https://chat.sby.clouds.id",
+    ws      :"wss://chat.sby.clouds.id/websocket",
+
+    // //RocketChat GLS Mobile Kantor
+    // http    :"http://172.16.200.56:3000",
+    // ws      :"ws://172.16.200.56:3000/websocket",
     
 };
 

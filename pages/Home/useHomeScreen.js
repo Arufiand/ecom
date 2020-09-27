@@ -10,8 +10,8 @@ import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('admin');
-    const [pass, setPass] = useState('adminadmin');
+    const [username, setUsername] = useState('');
+    const [pass, setPass] = useState('');
     const [email, setEmail] = useState('alfiandannyarmanta@gmail.com');
     const [name, setName] = useState('Alfian Danny A');
     const [mainId, setMainId] = useState('080988');
@@ -60,7 +60,8 @@ const useHomeScreen = () => {
                 console.log(JSON.stringify(error, null, 2));
                 console.log(`Data Username dan Email belum ada! lakukan registrasi`);
                 try {
-                    fetch_register(username, pass, email, name);
+                    console.log(`Ojok Aneh Aneh!`);
+                    //fetch_register(username, pass, email, name);
                 } catch (error) {
                     console.log(error);
                 }
