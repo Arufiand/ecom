@@ -10,8 +10,8 @@ import label from '../../config/local_label_storage';
 
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('');
-    const [pass, setPass] = useState('');
+    const [username, setUsername] = useState('admin');
+    const [pass, setPass] = useState('adminadmin');
     const [email, setEmail] = useState('alfiandannyarmanta@gmail.com');
     const [name, setName] = useState('Alfian Danny A');
     const [mainId, setMainId] = useState('080988');
