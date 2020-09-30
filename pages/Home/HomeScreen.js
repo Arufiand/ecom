@@ -1,64 +1,112 @@
 //This is an example code for Bottom Navigation//
-import React from 'react';
+import React,{ useState} from 'react';
 //import react in our code.
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal,ScrollView, DatePickerAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import Colors from '../../config/utils';
+import label from '../../config/local_label_storage';
 //import all the basic component we have used
 import useHomeScreen from './useHomeScreen';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
-import label from '../../config/local_label_storage';
+import moment from 'moment';
+import 'moment/locale/id'
+import Styles from '../Styling/chatStyle'
+import Colors from '../../config/utils';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
 
 const HomeScreen = ({ route, navigation }) => {
 
     const oneSignalPushToken = label.onesignal_push_token;
-    // const rcAuthToken = label.rc_user_auth_token;
-    // const rcUserId = label.rc_user_id;
-
-    // console.log(`RC AuthToken : ${rcAuthToken}`);
-    // console.log(`RC UserId : ${rcUserId}`);
-
+    const [modalVisible, setModalVisible] = useState(false);
     const [username, setUsername, pass, setPass, name, setName, email,
-        setEmail, fetch_login, fetch_register, fetch_groupList, groups, rcAuthToken, rcUserId] = useHomeScreen();
+        setEmail, mainId, setMainId, role, setRole, fetch_login, fetch_register, fetch_groupList, fetch_usersList,
+        fetch_auto_login_register, fetch_logout, fetch_avatar, groups, users, rcAuthToken, rcUserId, subtitle, statusLogin] = useHomeScreen();
 
-    const renderItem = ({ item, index }) => {
+    const renderItemGroups = ({ item, index }) => {
         let roomId = item._id;
-        return (
-            
-            <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Chat', {roomId, rcAuthToken,rcUserId}); }}>  
-                <View style={{ width: responsiveWidth(99), paddingLeft: 5, paddingTop: 5, paddingRight: 5, borderRadius: 4, backgroundColor: Colors.cardMenu }}>
-                    {item.count != 0 ? 
-                    <ListItem
-                        title={item.name}
-                        subtitle={item.lastMessage.msg ? item.lastMessage.msg : "Belum Ada Pesan" } 
-                    /> : 
-                    <ListItem
-                                title={"Tidak Ada Data"}
-                                subtitle={"Tidak Ada Data"}
-                        />
-                    }
-                </View>
-            </TouchableOpacity>
-        );
+        if (statusLogin == false) {
+            return (
+                <View><Text>Belum Login!</Text></View>
+            );
+        }
+        else if (statusLogin == true) {
+            if (item.lastMessage != "") {
+                let todayDate = moment(new Date()).format("DD MMM YY") 
+                //console.log(`todayDate= ${todayDate}`);
+                return (
+                    
+                    <View style={Styles.renderItem}>
+                        <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
+                                    <ListItem
+                                        title={item.name}
+                                        // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                        subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                        leftAvatar={{
+                                            source: { uri: fetch_avatar(item.name) }
+                                        }}
+                                        rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                            <Text style={{ fontSize: 11 }}>     
+                                                {moment(item.lastMessage.ts).format("DD MMM YY") == todayDate ? moment(item.lastMessage.ts).local().startOf('seconds').fromNow() : moment(item.lastMessage.ts).format("DD MMM YY") }
+                                                
+                                            </Text>
+                                        </View> : null}
+                                     />
+                        </TouchableOpacity>
+                    </View>
+                );
+            }
+        }
     }
 
+    const renderItemUsers = ({ item, index }) => {
+        let usernameRoom = item.username;
+        //console.log(`roomId = ${roomId}`);
+        if (statusLogin == false) {
+            return (
+              <View><Text>Belum Login!</Text></View>  
+            );
+        }
+        else if (statusLogin == true) {
+            if (item.lastMessage != "") {
+                return (
+                    <View style={Styles.renderItem}>
+                        <TouchableOpacity style={{ backgroundColor: Colors.circle }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
+                                <ListItem
+                                    title={item.name}
+                                    // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+                                    subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+                                    leftAvatar={{
+                                        source: { uri: fetch_avatar(item.username) }
+                                        // title: item.name
+                                    }}
+                                    // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                    rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+                                        <Text style={{ fontSize: 11 }}>
+                                            {moment(item.lastMessage.ts).format("DD MMM | H:m")}
+                                        </Text>
+                                    </View> : null}
+                                    />
+                        </TouchableOpacity>
+                    </View>
+                );
+            }
+        }
+    }
+    
+
     return (
-        <View style={styles.container}>
-            <View style = {styles.circle}></View>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Username"
-                    placeholderTextColor={Colors.placeHolders}
-                    // onSubmitEditing= {()=>this.password.focus()}
-                    onChangeText={text => {
-                        setEmail(text);
-                    }}
-                    value={email}
-                />
+        <View style={Styles.container}>
+            <View style={Styles.circle}></View>
             <TextInput
-                style={styles.input}
+                style={Styles.input}
+                placeholder="Username"
+                placeholderTextColor={Colors.placeHolders}
+                // onSubmitEditing= {()=>this.password.focus()}
+                onChangeText={text => {
+                    setUsername(text);
+                }}
+                value={username}
+            />
+            <TextInput
+                style={Styles.input}
                 placeholder="Password"
                 placeholderTextColor={Colors.placeHolders}
                 secureTextEntry={true}
@@ -68,32 +116,44 @@ const HomeScreen = ({ route, navigation }) => {
                 }}
                 value={pass}
             />
-            <View style={{flexDirection:'row'}}>
+            <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => fetch_login(email, pass, oneSignalPushToken)}>
+                    style={Styles.button}
+                    onPress={() => fetch_auto_login_register(username, pass, email, name)}>
                     <Text>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => fetch_register(username, pass, email, name)}>
+                    style={Styles.button}
+                    onPress={() => fetch_register(username, pass, email, name, role, mainId)}>
                     <Text>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => fetch_groupList()}>
-                    <Text>Group List</Text>
+                    style={Styles.button}
+                    onPress={() => fetch_logout()}>
+                    <Text>Log Out?</Text>
                 </TouchableOpacity>
-                </View>
-                <View style= {{flexDirection: 'row'}}>
-                 <FlatList
-                    keyExtractor={(item, index) => item._id }
-                    data={ groups }
-                    renderItem={renderItem}
-                   />
-                </View>
+            </View>
+            <View style={ {height: 400}}>
+                    <FlatList
+                        keyExtractor={(item, index) => item._id}
+                        data={users}
+                        renderItem={renderItemUsers}
+                    />
+                    <ScrollView nestedScrollEnabled = {true}>
+                        <FlatList
+                            keyExtractor={(item, index) => item._id}
+                            data={groups}
+                            renderItem={renderItemGroups}
+                        />
+                    </ScrollView>
+                    {/* <FlatList
+                        keyExtractor={(item, index) => item._id}
+                        data={users}
+                        renderItem={renderItemUsers}
+                    /> */}
+            </View>
         </View>
-        
+
     )
 }
 
@@ -101,17 +161,7 @@ export default HomeScreen
 
 const CardMenu = ({ title }) => {
     return (
-        <View style={{
-            backgroundColor: Colors.cardMenu,
-            width: responsiveWidth(5),
-            height: responsiveWidth(5),
-            justifyContent: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 4,
-            marginTop: 10,
-            marginRight: -5
-        }}>
+        <View style={Styles.CardMenu}>
             <View style={{ justifyContent: 'center', alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ fontSize: 10, textAlign: 'center', color: Colors.buttons }}>{title}</Text>
             </View>
@@ -119,55 +169,3 @@ const CardMenu = ({ title }) => {
     );
 }
 
-const styles = StyleSheet.create({
-    button: {
-        alignItems: 'center',
-        backgroundColor: Colors.buttons,
-        padding: 10,
-        width: 100,
-        margin: 10,
-        marginTop: 20,
-        borderRadius: 20,
-        justifyContent : 'center'
-    },
-    container: {
-        flex: 1,
-        width : '100%',
-        height: '30%',
-        justifyContent : 'center',
-        alignItems : 'center'
-    },
-    circle: {
-        width: 500,
-        height: 500,
-        borderRadius : 500/2,
-        backgroundColor: Colors.circle,
-        position: 'absolute',
-        left: -150,
-        top: -20
-
-    },
-    input: {
-        width: 300,
-        borderRadius: 300/2,
-        backgroundColor: Colors.input,
-        padding: 15,
-        margin: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign : 'center'
-
-
-    },
-    container: {
-        flex: 1,
-        backgroundColor: Colors.container,
-        alignItems: 'center',
-        justifyContent: 'center',  
-    },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
-    },
-});

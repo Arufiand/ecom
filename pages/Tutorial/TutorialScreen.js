@@ -1,28 +1,36 @@
-import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
-// import useTutorial from './UseTutorial';
-import useTutorial from './useTutorial';
+// import React, { useEffect } from 'react';
+// import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+// import useTutorial from './useTutorial';
+// import Colors from '../../config/utils';
 
 
-const TutorialScreen =({route, navigation})=> {
-    const [ws_open, ws_onMessage, ws_close]= useTutorial({route})
+// const TutorialScreen = ({ route, navigation }) => {
+//     const [a, ws_rc_login_token] = useTutorial({ route });
 
-    useEffect(() => {
+//     useEffect(() => {
 
-        ws_open()
-        try {
-            ws_onMessage()
-        }
-        catch (error) {
-            ws_close()
-        }
-    }, []); 
-   
-    return (
-        <View>
-            <Text></Text>
-        </View>
-    )
-}
+//     }, []);
 
-export default TutorialScreen;
+//     return (
+//         <View>
+//             <TouchableOpacity onPress={ws_rc_login_token} style={styles.button}>
+//                 <Text>Login</Text>
+//             </TouchableOpacity>
+//         </View>
+//     )
+// }
+
+
+// export default TutorialScreen;
+// const styles = StyleSheet.create({
+//     button: {
+//         alignItems: 'center',
+//         backgroundColor: Colors.buttons,
+//         padding: 10,
+//         width: 100,
+//         margin: 10,
+//         marginTop: 20,
+//         borderRadius: 20,
+//         justifyContent: 'center'
+//     }
+// });

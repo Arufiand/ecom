@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 
 const Router = () => {
     return (
-        <Stack.Navigator initialRouteName="Tutorial"
+        <Stack.Navigator initialRouteName="Home"
             screenOptions={{
                 headerShown: false
             }}>
@@ -18,9 +18,9 @@ const Router = () => {
                 <Stack.Screen name="Chat" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
                 }} component={ChatScreen}/>
-                <Stack.Screen name="Tutorial" options={{
+                {/* <Stack.Screen name="Tutorial" options={{
                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                }} component={TutorialScreen}/>
+                }} component={TutorialScreen}/> */}
         </Stack.Navigator>
     )
 }

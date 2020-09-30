@@ -4,7 +4,9 @@ const colors = {
     input: '#838383',
     container: '#d9adad',
     placeHolders: '#4b5d67',
-    circle: '#cedebd'
+    circle: '#cedebd',
+    default_text: '#262D3D',
+    
 
 
 }
