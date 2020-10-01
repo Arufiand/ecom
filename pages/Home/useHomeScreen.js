@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useStore } from '../../App';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
-
+//BAOCT NGENTOOT ANJAY
 const useHomeScreen = () => {
 
     const [username, setUsername] = useState('admin');
