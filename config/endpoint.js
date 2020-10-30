@@ -1,6 +1,6 @@
 const globalEP = {
-    http : "http://172.16.200.56:3000",
-    ws:    "ws://172.16.200.56:3000/websocket"
+    http : "Isikan dengan alamat rocket chat! ex = http://URLRocketChat:3000",
+    ws:    "isikan dengan alamat rocket chat untuk websocket! ex = ws://URLRocketChat:3000/websocket"
 };
 
 export default class endpoint{
