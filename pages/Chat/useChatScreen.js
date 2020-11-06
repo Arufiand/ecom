@@ -20,10 +20,8 @@ const useChatScreen = ({ route }) => {
     const [messages, setMessages] = useState([]);
     const [loadHistory, setLoadHistory] = useState(false);
 
-    useEffect(() => {
-        
-        
-        switch (roomId || usernameRoom) {
+    useEffect(() => {  
+         switch (roomId || usernameRoom) {
             case roomId:
                 console.log(`isi room ID : ${roomId}`);
                 //ws_rc_load_message(roomId);
