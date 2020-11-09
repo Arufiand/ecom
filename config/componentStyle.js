@@ -99,11 +99,10 @@ const Styles = StyleSheet.create({
     },
 
     pictureMenu :{
+        flex: 1,
         width : 50,
         height : 50,
-        flex : 1,
         flexDirection : 'row-reverse',
-        // marginLeft : 'auto',
         position : 'absolute',
         borderRadius : 50,
         right : 0
