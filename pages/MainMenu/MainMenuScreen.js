@@ -18,25 +18,57 @@ const MainMenu = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [fetch_avatar] = useMainMenu({ route });
     const { authContext, response, chat, setParamNavigator, paramNavigator } = useStore();
-  
+
+    const Story = props => {
+      return (
+        <View style={{ alignItems: "center", marginRight: 20 }}>
+          <Image
+            source={{ uri: fetch_avatar(props.gambar) }}
+            style={Styles.pictureMenu}
+          />
+
+          <Text style={{ width: 60, textAlign: "center" }}>
+            {props.Nama}
+          </Text>
+        </View>
+      );
+    }
+
     return (
+        <View>
         <View style={Styles.container}>
-            <View style={Styles.labelContainer}>
-                <Text style={Styles.labelHeader}>Main Menu</Text>
+            <View style={{ flexDirection: 'row'}}>
+                <View style={{ flex: 5 }}>
+                    <View style={Styles.labelContainer}>
+                        <Text style={Styles.labelHeader}>Main Menu</Text>
+                    </View>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <View style={Styles.labelContainer}>
+                    <Image
+                        style={Styles.pictureMenu}
+                        source= {{uri: fetch_avatar('admin')}}           
+                    />
+                  </View>
+                </View>
             </View>
-            <View style={Styles.labelContainer}>
-              <Image
-                style={Styles.pictureMenu}
-                source= {{uri: fetch_avatar('admin')}}           
-              />
-            </View>
-            <View style={Styles.borderedBox}>
-                <View style={Styles.borderedBoxContainer}>
-                 <Text style={Styles.labelBody}>Contact</Text>
+                <View style={Styles.borderedBox}>
+                    <View style={Styles.borderedBoxContainer}>
+                      <Text style={Styles.labelBody}>Contact</Text>
+                      <ScrollView horizontal>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                        <Story Nama="admin" gambar="admin"/>
+                      </ScrollView>
+                    </View>
                 </View>
             </View>
         </View>
-
+        
     )
 }
 

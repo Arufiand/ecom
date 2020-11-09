@@ -67,7 +67,6 @@ const useHomeScreen = () => {
             });
     }
     useEffect(() => {
-    console.log(`isi rcAuthToken = ${rcAuthToken}`);  
         setParamNavigator({ rcUserId, rcAuthToken });     
     },[rcUserId, rcAuthToken])
 

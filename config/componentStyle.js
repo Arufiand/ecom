@@ -27,8 +27,9 @@ const Styles = StyleSheet.create({
         top: responsiveHeight(10),
     },
     borderedBoxContainer: {
+        flex : 1,
         height: responsiveHeight(100), // 50% of window height
-        width: responsiveWidth(100), // 50% of window width,
+        width: responsiveWidth(90), // 50% of window width,
         borderRadius: 50,
         backgroundColor: Colors.borderedBox,
        // justifyContent: 'flex-start',
@@ -81,7 +82,7 @@ const Styles = StyleSheet.create({
 
     labelBody: {
         fontWeight: 'bold',
-        fontSize: responsiveFontSize(4.1),
+        fontSize: responsiveFontSize(3.5),
         position: 'relative',
         color: Colors.labelBody
     },
@@ -99,12 +100,12 @@ const Styles = StyleSheet.create({
     },
 
     pictureMenu :{
-        flex: 1,
-        width : 50,
-        height : 50,
-        flexDirection : 'row-reverse',
+        
+        width : responsiveWidth(17),
+        height : responsiveHeight(7),
+        // flexDirection : 'row-reverse',
         position : 'absolute',
-        borderRadius : 50,
+        borderRadius : 25,
         right : 0
     }
 });
