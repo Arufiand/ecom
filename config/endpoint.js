@@ -5,8 +5,8 @@ const globalEP = {
 
     // //RocketChat Kantor
     // //saat url menggunakan WSL (https), untuk websocket wajib gunakan wss, bukan ws
-    // http    :"https://chat.sby.clouds.id",
-    // ws      :"wss://chat.sby.clouds.id/websocket",
+     http    :"https://chat.sby.clouds.id",
+     ws      :"wss://chat.sby.clouds.id/websocket",
 
     
 };
