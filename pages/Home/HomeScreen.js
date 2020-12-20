@@ -1,7 +1,7 @@
 //This is an example code for Bottom Navigation//
 import React, { useState } from 'react';
 //import react in our code.
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, ScrollView, DatePickerAndroid } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Modal, ScrollView, StatusBar } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import label from '../../config/localLabelStorage';
 //import all the basic component we have used
@@ -68,6 +68,7 @@ const HomeScreen = ({ route, navigation }) => {
             if (item.lastMessage != "") {
                 return (
                     <View style={Styles.renderItem}>
+                        <StatusBar backgroundColor={Colors.container} barStyle="light-content" />
                         <TouchableOpacity style={{ backgroundColor: Colors.borderedBox }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
                             <ListItem
                                 title={item.name}

@@ -3,7 +3,10 @@ import Colors from './utils';
 import {
     responsiveHeight,
     responsiveWidth,
-    responsiveFontSize
+    responsiveFontSize,
+    responsiveScreenHeight,
+    responsiveScreenWidth,
+    useResponsiveScreenHeight,
 } from "react-native-responsive-dimensions";
 
 const Styles = StyleSheet.create({
@@ -99,15 +102,62 @@ const Styles = StyleSheet.create({
         marginRight: -5
     },
 
-    pictureMenu :{
+
+
+    page : {
+         flex : 3,
+         backgroundColor : Colors.violet
         
-        width : responsiveWidth(17),
-        height : responsiveHeight(7),
-        // flexDirection : 'row-reverse',
+    },
+    firstCard : {
+        flex : 1,
+        width : responsiveScreenWidth(100),
+        height: responsiveScreenHeight(100),
+        borderRadius: 40,
+        backgroundColor : Colors.softWhite,
+        top: responsiveHeight(15),
+        alignItems: 'baseline',
+    },
+    secondCard : {
+        flex : 20,
+        width : responsiveScreenWidth(100),
+        height: responsiveScreenHeight(100),
+        borderRadius: 40,
+        backgroundColor : Colors.lightBlue,
+        // top: responsiveHeight(20),
+        alignItems: 'baseline',
+        
+    },
+    cardLabelHeader : {
+        marginLeft : responsiveWidth(9),
+        top : responsiveHeight(3),
+        fontWeight: 'bold',
+        fontSize: responsiveFontSize(4.1),
+        color: Colors.violet,
+    },
+    mainLabelHeader : {
+        marginLeft : responsiveWidth(9),
+        top : responsiveHeight(3),
+        fontWeight: 'bold',
+        fontSize: responsiveFontSize(4.1),
+        color: Colors.softWhite,
+    },
+    displayPictureIcon :{
+        width : 50,
+        height : 50,
+        marginTop : responsiveScreenHeight(2),
         position : 'absolute',
-        borderRadius : 25,
-        right : 0
-    }
+        borderRadius : 50/2,
+    },
+
+    pictureMenu :{
+        width : 60,
+        height : 60,
+        position : 'relative',
+        borderRadius : 70/2,
+        marginTop : responsiveScreenHeight(4),
+        marginRight : responsiveWidth(4)
+    },
 });
 
 export default Styles;

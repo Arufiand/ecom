@@ -9,6 +9,12 @@ const colors = {
     default_text: '#262D3D',
     labelHeader: '#FFFFFF',
 
+    violet : '#37307D',
+    white : '#FFFFFF',
+    lightBlue : '#2AC2FC',
+    softBlack : '#262D3D',
+    softWhite : '#f6f5f5',
+
 }
 
 export default colors;
