@@ -52,15 +52,7 @@ const Styles = StyleSheet.create({
     labelContainer: { margin: responsiveWidth(responsiveHeight(1)) },
 
     scrollView: {
-        height: '20%',
-        width: '80%',
-        margin: 20,
-        alignSelf: 'center',
-        padding: 20,
-        borderWidth: 5,
         borderRadius: 5,
-        borderColor: 'black',
-        backgroundColor: 'lightblue'
     },
 
     input: {

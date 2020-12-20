@@ -68,7 +68,7 @@ const HomeScreen = ({ route, navigation }) => {
             if (item.lastMessage != "") {
                 return (
                     <View style={Styles.renderItem}>
-                        <StatusBar backgroundColor={Colors.container} barStyle="light-content" />
+                        
                         <TouchableOpacity style={{ backgroundColor: Colors.borderedBox }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
                             <ListItem
                                 title={item.name}
@@ -95,6 +95,7 @@ const HomeScreen = ({ route, navigation }) => {
 
     return (
         <View style={Styles.container}>
+            <StatusBar backgroundColor={Colors.violet} barStyle="light-content" />
             <View style={Styles.labelContainer}>
                 <Text style={Styles.labelHeader}>Login</Text>
             </View>
