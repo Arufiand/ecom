@@ -10,8 +10,8 @@ import label from '../../config/local_label_storage';
 //BAOCT NGENTOOT ANJAY
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('admin');
-    const [pass, setPass] = useState('adminadmin');
+    const [username, setUsername] = useState('Alfian');
+    const [pass, setPass] = useState('Med1xsoft');
     const [email, setEmail] = useState('alfiandannyarmanta@gmail.com');
     const [name, setName] = useState('Alfian Danny A');
     const [mainId, setMainId] = useState('080988');

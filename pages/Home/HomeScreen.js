@@ -35,7 +35,14 @@ const HomeScreen = ({ route, navigation }) => {
                     
                     <View style={Styles.renderItem}>
                         <TouchableOpacity style={{ backgroundColor: Colors.circle}} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { roomId, rcAuthToken, rcUserId }); }}>
-                                    <ListItem
+                                   <ListItem>
+                                     <ListItem.Content>
+                                        <ListItem.Title>{item.name}</ListItem.Title>
+                                        <ListItem.Subtitle>{item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}</ListItem.Subtitle>
+                                     </ListItem.Content>
+                                   </ListItem>
+                                   
+                                    {/* <ListItem
                                         title={item.name}
                                         // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
                                         subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
@@ -48,7 +55,7 @@ const HomeScreen = ({ route, navigation }) => {
                                                 
                                             </Text>
                                         </View> : null}
-                                     />
+                                     /> */}
                         </TouchableOpacity>
                     </View>
                 );
@@ -56,40 +63,40 @@ const HomeScreen = ({ route, navigation }) => {
         }
     }
 
-    const renderItemUsers = ({ item, index }) => {
-        let usernameRoom = item.username;
-        //console.log(`roomId = ${roomId}`);
-        if (statusLogin == false) {
-            return (
-              <View><Text>Belum Login!</Text></View>  
-            );
-        }
-        else if (statusLogin == true) {
-            if (item.lastMessage != "") {
-                return (
-                    <View style={Styles.renderItem}>
-                        <TouchableOpacity style={{ backgroundColor: Colors.circle }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
-                                <ListItem
-                                    title={item.name}
-                                    // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
-                                    subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
-                                    leftAvatar={{
-                                        source: { uri: fetch_avatar(item.username) }
-                                        // title: item.name
-                                    }}
-                                    // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
-                                    rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
-                                        <Text style={{ fontSize: 11 }}>
-                                            {moment(item.lastMessage.ts).format("DD MMM | H:m")}
-                                        </Text>
-                                    </View> : null}
-                                    />
-                        </TouchableOpacity>
-                    </View>
-                );
-            }
-        }
-    }
+    // const renderItemUsers = ({ item, index }) => {
+    //     let usernameRoom = item.username;
+    //     //console.log(`roomId = ${roomId}`);
+    //     if (statusLogin == false) {
+    //         return (
+    //           <View><Text>Belum Login!</Text></View>  
+    //         );
+    //     }
+    //     else if (statusLogin == true) {
+    //         if (item.lastMessage != "") {
+    //             return (
+    //                 <View style={Styles.renderItem}>
+    //                     <TouchableOpacity style={{ backgroundColor: Colors.circle }} activeOpacity={0.5} onPress={() => { navigation.navigate('Chat', { usernameRoom, rcAuthToken, rcUserId }); }}>
+    //                             <ListItem
+    //                                 title={item.name}
+    //                                 // subtitle={!!selected.get(item._id) ? item.lastMessage.msg : subtitle}
+    //                                 subtitle={item.lastMessage ? item.lastMessage.msg : "Belum ada pesan!"}
+    //                                 leftAvatar={{
+    //                                     source: { uri: fetch_avatar(item.username) }
+    //                                     // title: item.name
+    //                                 }}
+    //                                 // rightTitle={item.lastMessage.ts == "-" ? null : <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+    //                                 rightTitle={item.lastMessage ? <View style={{ marginTop: item.count_chat == 0 ? 0 : -10, marginRight: -5 }}>
+    //                                     <Text style={{ fontSize: 11 }}>
+    //                                         {moment(item.lastMessage.ts).format("DD MMM | H:m")}
+    //                                     </Text>
+    //                                 </View> : null}
+    //                                 />
+    //                     </TouchableOpacity>
+    //                 </View>
+    //             );
+    //         }
+    //     }
+    // }
     
 
     return (
@@ -134,11 +141,11 @@ const HomeScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={ {height: 400}}>
-                    <FlatList
+                    {/* <FlatList
                         keyExtractor={(item, index) => item._id}
                         data={users}
                         renderItem={renderItemUsers}
-                    />
+                    /> */}
                     <ScrollView nestedScrollEnabled = {true}>
                         <FlatList
                             keyExtractor={(item, index) => item._id}

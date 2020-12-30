@@ -179,9 +179,10 @@ const useChatScreen = ({ route }) => {
 
         axios(config)
             .then(function (response) {
-
+              console.log(JSON.stringify(response.data.messages, null, 2));
                 // looping untuk chat array
                 for (let msg of response.data.messages){
+                  if (!msg.attachments){
                     const chat = {
                         _id: msg._id,
                         text: msg.msg,
@@ -193,6 +194,27 @@ const useChatScreen = ({ route }) => {
                         }
                     }
                     setMessages(prevArray => [...prevArray, chat])
+                  }
+                  else if(msg.attachments){
+                    if (msg.file.type == 'image/jpeg' || msg.file.type == 'image/png') {
+                      var web = "https://chat2.sby.clouds.id"
+                      var title = msg.attachments[0].title_link.split(";", 2)
+                      var image = web + title[0]
+                      console.log("history_title", `https://chat2.sby.clouds.id${title[0]}`)
+                      //console.log("history_url", title[1])
+                      const chat = {
+                        _id: msg._id,
+                        image: "https://chat2.sby.clouds.id/file-upload/fH2EogQnKxkY7q2Zc/download.jpeg",
+                        createdAt: msg.ts,
+                        user: {
+                          _id: msg.u._id,
+                          name: msg.u.name,
+                          avatar: msg.attachments[0].image_url,
+                        }
+                      }
+                      setMessages(prevArray => [...prevArray, chat])
+                    }
+                  }
                     setLoadHistory(true);
                 }
                 // end looping chat
