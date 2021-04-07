@@ -7,15 +7,15 @@ import { useState, useEffect } from 'react';
 import { useStore } from '../../App';
 import EndPoint from '../../config/endpoint';
 import label from '../../config/local_label_storage';
-//BAOCT NGENTOOT ANJAY
+
 const useHomeScreen = () => {
 
-    const [username, setUsername] = useState('Alfian');
-    const [pass, setPass] = useState('Med1xsoft');
-    const [email, setEmail] = useState('alfiandannyarmanta@gmail.com');
-    const [name, setName] = useState('Alfian Danny A');
-    const [mainId, setMainId] = useState('080988');
-    const [role, setRole] = useState('siswa');
+    const [username, setUsername] = useState('');
+    const [pass, setPass] = useState('');
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const [mainId, setMainId] = useState('');
+    const [role, setRole] = useState('');
     const [statusLogin, setStatusLogin] = useState(false);
 
     const [rcAuthToken, setRcAuthToken] = useState('');
