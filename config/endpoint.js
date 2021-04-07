@@ -1,12 +1,8 @@
 const globalEP = {
-    //RocketChat Schadenfreude
-    //http: "http://172.25.119.8:3000",
-    //ws:   "ws://172.25.119.8:3000/websocket"
-
-    // //RocketChat Kantor
+    // //Open Rocket Chat Demo Server
     // //saat url menggunakan WSL (https), untuk websocket wajib gunakan wss, bukan ws
-      http    :"https://chat2.sby.clouds.id",
-      ws      :"wss://chat2.sby.clouds.id/websocket",
+      http    :"https://open.rocket.chat/home", //isi alamat rocket chat
+      ws      :"wss://open.rocket.chat/home",
 
 };
 
